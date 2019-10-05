@@ -69,7 +69,6 @@ notNowButton = browser.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/b
 sleep(1)
 actions = ActionChains(browser)
 actions.move_to_element(notNowButton)
-#actions.pause(1)
 actions.click(notNowButton)
 actions.perform()
 
@@ -119,25 +118,27 @@ def createList(body):
             if f not in theList:
                theList.append(f)
         print(f)
-
-while len(theList) != int(numberOfFollowers):
-    print(len(theList))
-    browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
-    print('executed 1...')
-    sleep(2)
-    print('executed 2...')
-    multiple = multiple + 0.1
-    
-    browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
-    sleep(1)
-    followersList = browser.find_element_by_xpath('/html/body/div[3]/div/div[2]/ul')
-    ActionChains(browser)\
-          .move_to_element(followersList).click()\
-          .perform()
-    followersListNodes = followersList.get_attribute('innerHTML')
-    followerSoup = BeautifulSoup(followersListNodes, 'lxml')
-    sleep(2)
-    createList(followerSoup.html.body.div)
+try:
+    while len(theList) != int(numberOfFollowers):
+        print(len(theList))
+        browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
+        print('executed 1...')
+        sleep(2)
+        print('executed 2...')
+        multiple = multiple + 0.1
+        
+        browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
+        sleep(1)
+        followersList = browser.find_element_by_xpath('/html/body/div[3]/div/div[2]/ul')
+        ActionChains(browser)\
+              .move_to_element(followersList).click()\
+              .perform()
+        followersListNodes = followersList.get_attribute('innerHTML')
+        followerSoup = BeautifulSoup(followersListNodes, 'lxml')
+        sleep(2)
+        createList(followerSoup.html.body.div)
+except:
+    browser.close()
 
 sleep(5)
 
@@ -150,6 +151,7 @@ print('-------------------------------------------------------------------------
 
 print(theList)
 
+browser.close()
 
 print('----------------------------------------------------------------------------------------------------------')
 #print(followerSoup)
