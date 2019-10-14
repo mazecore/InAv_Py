@@ -1,7 +1,6 @@
 
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
-#from threading import Timer
 from time import sleep
 from bs4 import BeautifulSoup
 from . import test_file
@@ -11,13 +10,11 @@ from . import test_file
 
 
 #r = requests.get('https://www.investing.com/crypto/currencies')
-#
+
 #soup = bs.BeautifulSoup(r.text, 'xml')
-#
+
 #soup.find_all('a', {'class':'left noWrap elp symb js-currency-symbol'})
-#
-#<td class="price js-currency-price"><a class="pid-1057391-last redBg" href="/crypto/currency-pairs?c1=189&amp;c2=12">8,815.4</a></td>
-#<a class="pid-1057391-last redBg" href="/crypto/currency-pairs?c1=189&amp;c2=12">8,801.6</a>
+
 browser = webdriver.Chrome('C:\chromedriver')
 
 
@@ -154,10 +151,7 @@ print(theList)
 browser.close()
 
 print('----------------------------------------------------------------------------------------------------------')
-#print(followerSoup)
-sleep(3)
 
-#
 #ActionChains(browser)\
 #          .move_to_element(signInButton)\
 #          .click()\
