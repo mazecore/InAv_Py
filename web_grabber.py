@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from bs4 import BeautifulSoup
-from . import test_file
+import test_file
 #import xml.etree.ElementTree as ET
 
 #import requests
@@ -62,7 +62,8 @@ actions.perform()
 
 sleep(3)
 print('refusing to turn notifications on...')
-notNowButton = browser.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]')
+#notNowButton = browser.find_element_by_xpath('/html/body/div[3]/div/div/div[3]/button[2]')
+notNowButton = browser.find_element_by_xpath("//*[contains(text(),'Not Now')]")
 sleep(1)
 actions = ActionChains(browser)
 actions.move_to_element(notNowButton)
@@ -128,14 +129,16 @@ try:
         sleep(1)
         followersList = browser.find_element_by_xpath('/html/body/div[3]/div/div[2]/ul')
         ActionChains(browser)\
-              .move_to_element(followersList).click()\
+              .move_to_element(followersList)\
               .perform()
         followersListNodes = followersList.get_attribute('innerHTML')
         followerSoup = BeautifulSoup(followersListNodes, 'lxml')
         sleep(2)
         createList(followerSoup.html.body.div)
 except:
-    browser.close()
+    print(len(theList))
+    print('shit didnt work')
+#    browser.close()
 
 sleep(5)
 
@@ -148,7 +151,7 @@ print('-------------------------------------------------------------------------
 
 print(theList)
 
-browser.close()
+#browser.close()
 
 print('----------------------------------------------------------------------------------------------------------')
 
