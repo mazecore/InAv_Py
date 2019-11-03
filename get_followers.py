@@ -3,7 +3,6 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from bs4 import BeautifulSoup
-import test_file
 
 class FollowersList:
     
@@ -67,11 +66,12 @@ class FollowersList:
     def loopThisToScrollTheListOfFollowers(self):
         multiple = .5
         self.theList = []
+        loop = 1
         try:
             while len(self.theList) != int(self.numberOfFollowers):
                 print(len(self.theList))
                 self.browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
-                print('executed 1...')
+                print('executing loop number ', loop)
                 sleep(1)
                 multiple = multiple + 0.1
                 self.browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
@@ -82,18 +82,18 @@ class FollowersList:
                       .perform()
                 followersListNodes = followersList.get_attribute('innerHTML')
                 followerSoup = BeautifulSoup(followersListNodes, 'lxml')
-                print('creating the list from...')
-                print(followerSoup)
+                print('creating the list...')
                 sleep(2)
                 self.createList(followerSoup.html.body.div)
+                loop = loop + 1
         except Exception as e:
             print(len(self.theList))
             print('shit didnt work')
             print(e)
             self.browser.close()
         if len(self.theList) == int(self.numberOfFollowers):
+           print('got all the followers!')
            self.browser.close()
-           return self.theList
 
     def createList(self, body):
         for li in body:
@@ -110,7 +110,7 @@ class FollowersList:
                    self.theList.append(f)
             print(f)
 
-    def getFollowers(self):
+    def main_function(self):
         self.logInnn()
         sleep(2)
         self.refusingToTurnNotificationsOn()
@@ -119,8 +119,5 @@ class FollowersList:
         self.gettingNumberOfFollowers()
         self.goingToFollowersList()
         sleep(1)
-        return self.loopThisToScrollTheListOfFollowers()
-
-        
-if __name__ == '__main__':
-    FollowersList(test_file.login, test_file.password).getFollowers()
+        self.loopThisToScrollTheListOfFollowers()
+        return self.theList
