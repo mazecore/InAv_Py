@@ -86,14 +86,15 @@ class FollowersList:
                 sleep(2)
                 self.createList(followerSoup.html.body.div)
                 loop = loop + 1
+
+                if len(self.theList) > int(self.numberOfFollowers) - 1:
+                    print('got all the followers!')
+                    break
         except Exception as e:
             print(len(self.theList))
             print('shit didnt work')
             print(e)
-            self.browser.close()
-        if len(self.theList) == int(self.numberOfFollowers):
-           print('got all the followers!')
-           self.browser.close()
+            self.browser.close()        
 
     def createList(self, body):
         for li in body:
@@ -112,7 +113,7 @@ class FollowersList:
 
     def main_function(self):
         self.logInnn()
-        sleep(2)
+        sleep(4)
         self.refusingToTurnNotificationsOn()
         self.goingToProfilePage()
         sleep(3)
