@@ -4,7 +4,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from bs4 import BeautifulSoup
 
-class FollowersList:
+class InstaHub:
     
     def __init__(self, uzr_name, p_word):
         self.uzr_name = uzr_name
@@ -111,7 +111,7 @@ class FollowersList:
                    self.theList.append(f)
             print(f)
 
-    def main_function(self):
+    def get_followers(self):
         self.logInnn()
         sleep(4)
         self.refusingToTurnNotificationsOn()
