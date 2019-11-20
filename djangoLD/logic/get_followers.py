@@ -104,8 +104,9 @@ class InstaHub:
             img = li.find_all('img', src=True)
             if usrName != []:
                 f = { 
-                      "username": usrName[0]['href'], 
-                      "userpic": img[0]['src']
+                      "user_name": usrName[0]['href'], 
+                      "user_pic": img[0]['src'],
+                      "MyUser": self.uzr_name
                       }
                 if f not in self.theList:
                    self.theList.append(f)
