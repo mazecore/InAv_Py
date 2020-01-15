@@ -5,8 +5,8 @@ Created on Sun Nov  3 00:49:35 2019
 @author: Ldeezy
 """
 import test_file
-from compulsive_liker import InstaHub
+from compulsive_liker import LikerFollower
 
-followers = InstaHub(test_file.login, test_file.password).likyLiky()
+likes = LikerFollower(test_file.login2, test_file.password2, 'Nietzsche', 100).likyLiky()
 print('success')
-print('received {}'.format(followers))
+print('received {}'.format(likes))
