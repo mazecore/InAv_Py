@@ -2,26 +2,28 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from bs4 import BeautifulSoup
-from login import LogIn
+from djangoLD.logic.login import LogIn
 
-class Followers:
+class FollowingFollowers:
     
-    def __init__(self, uzr_name, p_word):
+    def __init__(self, uzr_name, p_word, following_or_followers):
+        self.uzr_name = uzr_name
+        self.followers_or_following = following_or_followers
         self.browser = LogIn(uzr_name, p_word).browser
         
         
-    def gettingNumberOfFollowers(self):
-        print('getting followers...')
-        self.numberOfFollowers = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a/span').text
+    def gettingTotalNumber(self):
+        print('getting %s...' % self.followers_or_following)
+        self.numberOfFollowers = self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text
         print('number of followers is {}'.format(self.numberOfFollowers))
         
-    def goingToFollowersList(self):
-        self.followersLink = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/header/section/ul/li[2]/a')
+    def goingToTheList(self):
+        self.followersLink = self.browser.find_element_by_xpath('//a[contains(@href, "%s")]' % self.followers_or_following)
         ActionChains(self.browser)\
           .move_to_element(self.followersLink).click()\
           .perform()
         sleep(1)
-        self.followersModal = self.browser.find_element_by_xpath('/html/body/div[3]/div/div[2]')
+        self.followersModal = self.browser.find_element_by_xpath('//div[@class="isgrP"]')
             
     def loopThisToScrollTheListOfFollowers(self):
         multiple = .5
@@ -36,7 +38,7 @@ class Followers:
                 multiple = multiple + 0.1
                 self.browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
                 sleep(1)
-                followersList = self.browser.find_element_by_xpath('/html/body/div[3]/div/div[2]/ul')
+                followersList = self.browser.find_element_by_xpath('//div[@class="isgrP"]/ul')
                 ActionChains(self.browser)\
                       .move_to_element(followersList)\
                       .perform()
@@ -72,10 +74,10 @@ class Followers:
                    self.theList.append(f)
             print(f)
 
-    def get_followers(self):
+    def get_em(self):
         sleep(3)
-        self.gettingNumberOfFollowers()
-        self.goingToFollowersList()
+        self.gettingTotalNumber()
+        self.goingToTheList()
         sleep(1)
         self.loopThisToScrollTheListOfFollowers()
         return self.theList

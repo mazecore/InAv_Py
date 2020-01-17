@@ -45,7 +45,6 @@ class LikerFollower:
                like = self.browser.find_element_by_xpath("//span[@class='glyphsSpriteHeart__outline__24__grey_9 u-__7']")
                follow = self.browser.find_element_by_xpath('//button[text()="Follow"]')
                actions.move_to_element(like)
-#               actions.pause(1)
                actions.click(like)
 #               actions.move_to_element(follow).click()
             except:

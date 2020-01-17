@@ -2,7 +2,7 @@ from django.db import models
 
 class MyUser(models.Model):
     user_name = models.CharField(max_length=50)
-    profile_info = models.CharField(max_length=300)
+    profile_info = models.CharField(max_length=300, null=True)
 
 class Follower(models.Model):
     user_name = models.CharField(max_length=50)
