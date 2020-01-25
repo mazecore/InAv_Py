@@ -7,6 +7,6 @@ Created on Sun Nov  3 00:49:35 2019
 import test_file
 from compulsive_liker import LikerFollower
 
-likes = LikerFollower(test_file.login2, test_file.password2, 'Nietzsche', 100).likyLiky()
+likes = LikerFollower(test_file.login2, test_file.password2, 'art', 136).likyLiky()
 print('success')
 print('received {}'.format(likes))

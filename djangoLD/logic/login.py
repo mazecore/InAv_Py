@@ -10,7 +10,6 @@ class LogIn:
         self.p_word = p_word
         self.browser = webdriver.Chrome('C:\chromedriver')
         self.logInnn()
-        sleep(2)
         self.refusingToTurnNotificationsOn()
         self.goingToProfilePage()
         sleep(3)
@@ -37,7 +36,7 @@ class LogIn:
     def refusingToTurnNotificationsOn(self):
         print('refusing to turn notifications on...')
         try:
-            sleep(1)
+            sleep(3)
             notNowButton = self.browser.find_element_by_xpath("//*[contains(text(),'Not Now')]")
             actions = ActionChains(self.browser)
             actions.move_to_element(notNowButton)
