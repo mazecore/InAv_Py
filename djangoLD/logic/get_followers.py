@@ -2,7 +2,7 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from bs4 import BeautifulSoup
-from djangoLD.logic.login import LogIn
+from login import LogIn
 
 class FollowingFollowers:
     
@@ -15,7 +15,7 @@ class FollowingFollowers:
     def gettingTotalNumber(self):
         print('getting %s...' % self.followers_or_following)
         self.numberOfFollowers = self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text
-        print('number of followers is {}'.format(self.numberOfFollowers))
+        print('number of {} is {}'.format(self.followers_or_following, self.numberOfFollowers))
         
     def goingToTheList(self):
         self.followersLink = self.browser.find_element_by_xpath('//a[contains(@href, "%s")]' % self.followers_or_following)
@@ -23,9 +23,16 @@ class FollowingFollowers:
           .move_to_element(self.followersLink).click()\
           .perform()
         sleep(1)
-        self.followersModal = self.browser.find_element_by_xpath('//div[@class="isgrP"]')
-            
+#        try:
+#           self.followersModal = self.browser.find_element_by_xpath('//div[@class="isgrP"]')
+#        except:
+#            ActionChains(self.browser)\
+#              .move_to_element(self.followersLink).click()\
+#              .perform()
+#            self.followersModal = self.browser.find_element_by_xpath('//div[@class="isgrP"]')
+
     def loopThisToScrollTheListOfFollowers(self):
+        print('starting to loop...')
         multiple = .5
         self.theList = []
         loop = 1
@@ -50,7 +57,11 @@ class FollowingFollowers:
                 loop = loop + 1
 
                 if len(self.theList) > int(self.numberOfFollowers) - 1:
-                    print('got all the followers!')
+                    print('got all the %s!' % self.followers_or_following)
+                    close = self.browser.find_element_by_xpath('//button[@class="wpO6b "]')
+                    ActionChains(self.browser)\
+                      .move_to_element(close).click()\
+                      .perform()
                     break
         except Exception as e:
             print(len(self.theList))
@@ -73,6 +84,17 @@ class FollowingFollowers:
                 if f not in self.theList:
                    self.theList.append(f)
             print(f)
+            
+    def get_unfollowers(self):
+        unfollowers = []
+        self.followers_or_following = 'followers'
+        followers = self.get_em()
+        self.followers_or_following = 'following'
+        following = self.get_em()
+        for i in following:
+           if i not in followers:
+              unfollowers.append(i)
+        return unfollowers
 
     def get_em(self):
         sleep(3)
