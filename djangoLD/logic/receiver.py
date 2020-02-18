@@ -8,10 +8,9 @@ import test_file
 from compulsive_liker import LikerFollower
 from get_followers import FollowingFollowers
 
-# likes = LikerFollower(test_file.login2, test_file.password2, 'art', 247).likyLiky()
-unfollowers = FollowingFollowers(test_file.login, test_file.password, 'followers').get_unfollowers()
-#followers = FollowingFollowers(test_file.login, test_file.password, 'followers').get_em()
+likes = LikerFollower(test_file.login2, test_file.password2, 'figurativeart', 247).likyLiky()
+##followers = FollowingFollowers(test_file.login, test_file.password, 'followers').get_em()
 #following = FollowingFollowers(test_file.login, test_file.password, 'following').get_em()
 print('success')
-#print('received {}'.format(likes))
-print('received {}'.format(unfollowers))
+print('received {}'.format(likes))
+# print('received {}'.format(unfollowers))

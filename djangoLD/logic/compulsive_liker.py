@@ -46,7 +46,7 @@ class LikerFollower:
             actions = ActionChains(self.browser)
             try:
                like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")
-               user_now_liked = self.browser.find_element_by_xpath("//h2[@class='BrX75']/a").text
+               user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/a").text
               # follow = self.browser.find_element_by_xpath('//button[text()="Follow"]')
                likeNodes = like.get_attribute('innerHTML')
 #               print('htmlAttributes==> \n', likeNodes)
