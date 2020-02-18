@@ -38,7 +38,7 @@ class LikerFollower:
 
 
     def like(self):
-        print('going to next loop. There are %s urls' % len(self.picsURLs))
+        print('going to like. There are %s urls' % len(self.picsURLs))
         j = 0
         for i in self.picsURLs:
             self.browser.get(i)
@@ -47,9 +47,7 @@ class LikerFollower:
             try:
                like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")
                user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/a").text
-              # follow = self.browser.find_element_by_xpath('//button[text()="Follow"]')
                likeNodes = like.get_attribute('innerHTML')
-#               print('htmlAttributes==> \n', likeNodes)
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked:
                    print('Yes!')
@@ -57,11 +55,33 @@ class LikerFollower:
                    actions.move_to_element(like)
                    actions.click(like)
                    self.last_liked = user_now_liked
-#                  actions.move_to_element(follow).click()
             except:
                 actions.pause(1)
             print('==============================> PIC # ',j )
-#            actions.pause(1)
+            actions.perform()
+            j = j + 1
+        self.browser.close()
+        
+    def follow(self):
+        print('going to follow. There are %s urls' % len(self.picsURLs))
+        j = 0
+        for i in self.picsURLs:
+            self.browser.get(i)
+            sleep(2)
+            actions = ActionChains(self.browser)
+            try:
+               follow = self.browser.find_element_by_xpath("//button[text()='Follow']")
+               if follow:
+                   actions.pause(2)
+                   actions.move_to_element(follow)
+                   actions.click(follow)
+                   print('Followed!')
+               else: 
+                  print('Did not follow..')
+            except:
+                actions.pause(1)
+                print('Shit didnt work!')
+            print('==============================> PIC # ',j )
             actions.perform()
             j = j + 1
         self.browser.close()
@@ -71,3 +91,8 @@ class LikerFollower:
         self.loadTagsPage()
         self.like()
         return self.thePics
+    
+    def followFollow(self):
+        self.loadTagsPage()
+        self.follow()
+        return 'success!'
