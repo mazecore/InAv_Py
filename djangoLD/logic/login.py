@@ -49,8 +49,9 @@ class LogIn:
 
     def goingToProfilePage(self):
         print('going to my profile page...')
-        profileIcon = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[3]/a')
+        self.browser.get('https://www.instagram.com/%s/' % self.uzr_name)
+#        profileIcon = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/div[3]/a')
         
-        ActionChains(self.browser)\
-                  .move_to_element(profileIcon).click()\
-                  .perform()
+#        ActionChains(self.browser)\
+#                  .move_to_element(profileIcon).click()\
+#                  .perform()

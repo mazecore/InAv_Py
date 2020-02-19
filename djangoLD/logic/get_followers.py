@@ -74,12 +74,12 @@ class FollowingFollowers:
             print('-----------------------------------------------------usrName-----------------------------------------------------')
             usrName = li.find_all(href = True)
             print(usrName)
-            img = li.find_all('img', src=True)
+    #        img = li.find_all('img', src=True)
             if usrName != []:
                 f = { 
                       "user_name": usrName[0]['href'], 
-                      "user_pic": img[0]['src'],
-                      "MyUser": self.uzr_name
+#                      "user_pic": img[0]['src'],
+#                      "MyUser": self.uzr_name
                       }
                 if f not in self.theList:
                    self.theList.append(f)
@@ -95,6 +95,22 @@ class FollowingFollowers:
            if i not in followers:
               unfollowers.append(i)
         return unfollowers
+    
+    def unfollow_unfollowers(self):
+        for i in self.get_unfollowers:
+            
+            self.browser.get('https://www.instagram.com%s' % i['user_name'])
+            sleep(2)
+            button = self.browser.find_element_by_xpath('//button[@class="_5f5mN    -fzfL     _6VtSN     yZn4P   "]')
+            ActionChains(self.browser)\
+                      .move_to_element(button).click()\
+                      .perform()
+            sleep(2)
+            unfollow_button = self.browser.find_element_by_xpath('//button[text()="Unfollow"]')
+            ActionChains(self.browser)\
+                      .move_to_element(unfollow_button).click()\
+                      .perform()
+            sleep(1)
 
     def get_em(self):
         sleep(3)
