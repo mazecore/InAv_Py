@@ -97,7 +97,7 @@ class FollowingFollowers:
         return unfollowers
     
     def unfollow_unfollowers(self):
-        for i in self.get_unfollowers:
+        for i in self.get_unfollowers():
             
             self.browser.get('https://www.instagram.com%s' % i['user_name'])
             sleep(2)
