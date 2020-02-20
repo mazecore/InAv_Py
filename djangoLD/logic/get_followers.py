@@ -94,23 +94,30 @@ class FollowingFollowers:
         for i in following:
            if i not in followers:
               unfollowers.append(i)
+        print('\n There are %s nonfollowers. \n' % len(unfollowers))
         return unfollowers
     
     def unfollow_unfollowers(self):
         for i in self.get_unfollowers():
-            
-            self.browser.get('https://www.instagram.com%s' % i['user_name'])
-            sleep(2)
-            button = self.browser.find_element_by_xpath('//button[@class="_5f5mN    -fzfL     _6VtSN     yZn4P   "]')
-            ActionChains(self.browser)\
-                      .move_to_element(button).click()\
-                      .perform()
-            sleep(2)
-            unfollow_button = self.browser.find_element_by_xpath('//button[text()="Unfollow"]')
-            ActionChains(self.browser)\
-                      .move_to_element(unfollow_button).click()\
-                      .perform()
-            sleep(1)
+            try:
+                self.browser.get('https://www.instagram.com%s' % i['user_name'])
+                sleep(2)
+                button = self.browser.find_element_by_xpath('//button[@class="_5f5mN    -fzfL     _6VtSN     yZn4P   "]')
+                ActionChains(self.browser)\
+                          .move_to_element(button).click()\
+                          .perform()
+                sleep(2)
+                unfollow_button = self.browser.find_element_by_xpath('//button[text()="Unfollow"]')
+                if unfollow_button:
+                    ActionChains(self.browser)\
+                              .move_to_element(unfollow_button).click()\
+                              .perform()
+                    sleep(1)
+                else:
+                    print('\n \n Not a nonfollower! \n \n')
+            except Exception as e:
+                print('didnt work for %s' % i)
+                print(e)
 
     def get_em(self):
         sleep(3)
