@@ -98,7 +98,8 @@ class FollowingFollowers:
         return unfollowers
     
     def unfollow_unfollowers(self):
-        for i in self.get_unfollowers():
+        unfollowers = self.get_unfollowers()
+        for i in unfollowers:
             try:
                 self.browser.get('https://www.instagram.com%s' % i['user_name'])
                 sleep(2)
@@ -118,6 +119,7 @@ class FollowingFollowers:
             except Exception as e:
                 print('didnt work for %s' % i)
                 print(e)
+        return unfollowers
 
     def get_em(self):
         sleep(3)

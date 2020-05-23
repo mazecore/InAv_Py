@@ -16,7 +16,12 @@ class LogIn:
 
     def logInnn(self):
         self.browser.get('https://www.instagram.com/accounts/login/')
-   #     self.browser.get('https://www.instagram.com/graphql/query/?query_hash=c76146de99bb02f6415203be841dd25a&variables=%7B%22id%22%3A%227561286020%22%2C%22include_reel%22%3Atrue%2C%22fetch_mutual%22%3Atrue%2C%22first%22%3A24%7D)
+  #     self.browser.get('https://www.instagram.com/graphql/query/?query_hash=c76146de99bb02f6415203be841dd25a&variables=%7B%22id%22%3A%227561286020%22%2C%22include_reel%22%3Atrue%2C%22fetch_mutual%22%3Atrue%2C%22first%22%3A24%7D)
+        sleep(2)
+        try:
+            usrNameInput = self.browser.find_element_by_name('username')
+        except:
+            self.browser.get('https://www.instagram.com/accounts/login/')
         sleep(2)
         usrNameInput = self.browser.find_element_by_name('username')
         pWordInput = self.browser.find_element_by_name('password')
@@ -35,8 +40,8 @@ class LogIn:
     
     def refusingToTurnNotificationsOn(self):
         print('refusing to turn notifications on...')
+        sleep(4)
         try:
-            sleep(3)
             notNowButton = self.browser.find_element_by_xpath("//*[contains(text(),'Not Now')]")
             actions = ActionChains(self.browser)
             actions.move_to_element(notNowButton)

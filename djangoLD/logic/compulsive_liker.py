@@ -31,7 +31,7 @@ class LikerFollower:
                        self.picsURLs.append(url)
                 except:
                     print('didnt work')
-            print('pics length ========>', len(self.picsURLs))
+            print('number of pictures collected ========>', len(self.picsURLs))
             self.counter = self.counter + 1
             sleep(2)
         self.picsURLs = self.picsURLs[9:]
@@ -50,7 +50,7 @@ class LikerFollower:
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked:
-                   print('Yes!')
+                   print('Liked!')
                    actions.pause(2)
                    actions.move_to_element(like)
                    actions.click(like)
