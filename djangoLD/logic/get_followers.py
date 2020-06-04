@@ -56,7 +56,7 @@ class FollowingFollowers:
                 self.createList(followerSoup.html.body.div)
                 loop = loop + 1
 
-                if len(self.theList) > int(self.numberOfFollowers) - 1:
+                if len(self.theList) >= int(self.numberOfFollowers) - 1:
                     print('got all the %s!' % self.followers_or_following)
                     close = self.browser.find_element_by_xpath('//button[@class="wpO6b "]')
                     ActionChains(self.browser)\
