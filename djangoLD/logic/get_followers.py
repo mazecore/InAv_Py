@@ -2,7 +2,7 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from bs4 import BeautifulSoup
-from login import LogIn
+from .login import LogIn
 
 class FollowingFollowers:
     

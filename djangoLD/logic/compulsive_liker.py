@@ -1,7 +1,7 @@
 
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
-from login import LogIn
+from .login import LogIn
 from bs4 import BeautifulSoup
 
 class LikerFollower:
@@ -90,7 +90,7 @@ class LikerFollower:
     def likyLiky(self):
         self.loadTagsPage()
         self.like()
-        return self.thePics
+        return self.picsURLs
     
     def followFollow(self):
         self.loadTagsPage()
