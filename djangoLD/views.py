@@ -12,13 +12,9 @@ def get_followers(HttpRequest):
 
 @csrf_exempt
 def update(HttpRequest):
-    # HttpResponse["Access-Control-Allow-Origin"] = "*"
-    # response["Access-Control-Allow-Methods"] = "GET, OPTIONS"
-    # response["Access-Control-Max-Age"] = "1000"
-    # response["Access-Control-Allow-Headers"] = "X-Requested-With, Content-Type"
     
     b = json.loads(HttpRequest.body)
-    liked_urls = LikerFollower(test_file.login, test_file.password,b['tag'], b['numberOfLikes']).likyLiky()
+    liked_urls = LikerFollower(test_file.login2, test_file.password2,b['tag'], b['numberOfLikes']).likyLiky()
 
     #likes = LikerFollower(test_file.boobslogin, test_file.boobspassword,'sonyalpha', 247).likyLiky()
     print(b)

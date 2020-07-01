@@ -19,7 +19,7 @@ class LikerFollower:
         self.counter = 0
         self.thePics = []
 
-        while len(self.picsURLs) < self.number and self.counter < 100:
+        while len(self.picsURLs) < self.number + 20 and self.counter < 100:
             self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
             sleep(2)
             self.thePics = self.browser.find_elements_by_xpath('//a[contains(@href,"/p/")]')
@@ -55,11 +55,13 @@ class LikerFollower:
                    actions.move_to_element(like)
                    actions.click(like)
                    self.last_liked = user_now_liked
+                   print('==============================> PIC # ',j )
+                   j = j + 1
             except:
-                actions.pause(1)
-            print('==============================> PIC # ',j )
+                actions.pause(1) 
             actions.perform()
-            j = j + 1
+            if j > self.number:
+                       break
         self.browser.close()
         
     def follow(self):
