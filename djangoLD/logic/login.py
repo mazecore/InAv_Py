@@ -8,7 +8,7 @@ class LogIn:
     def __init__(self, uzr_name, p_word):
         self.uzr_name = uzr_name
         self.p_word = p_word
-        self.browser = webdriver.Chrome('C:\chromedriver')
+        self.browser = webdriver.Chrome('./chromedriver')
         self.logInnn()
         self.refusingToTurnNotificationsOn()
         self.goingToProfilePage()
