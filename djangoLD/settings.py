@@ -26,7 +26,7 @@ SECRET_KEY = test_file.secretKey
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['ec2-54-175-162-21.compute-1.amazonaws.com','54.175.162.21']
 
 
 # Application definition

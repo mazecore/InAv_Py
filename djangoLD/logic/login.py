@@ -2,13 +2,18 @@
 from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
+from selenium.webdriver.chrome.options import Options
 
 class LogIn:
     
     def __init__(self, uzr_name, p_word):
         self.uzr_name = uzr_name
         self.p_word = p_word
-        self.browser = webdriver.Chrome('./chromedriver')
+        self.chrome_options = Options()
+        self.chrome_options.add_argument('--headless')
+        self.chrome_options.add_argument('--no-sandbox')
+        self.chrome_options.add_argument('--disable-dev-shm-usage')
+        self.browser = webdriver.Chrome('/home/ubuntu/django/chromedriver', chrome_options=self.chrome_options)
         self.logInnn()
         self.refusingToTurnNotificationsOn()
         self.goingToProfilePage()
