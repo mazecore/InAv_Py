@@ -14,8 +14,6 @@ def get_followers(HttpRequest):
 def update(HttpRequest):
     
     b = json.loads(HttpRequest.body)
-    liked_urls = LikerFollower(test_file.login, test_file.password,b['tag'], b['numberOfLikes']).likyLiky()
+    liked_urls = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).likyLiky()
 
-    #likes = LikerFollower(test_file.boobslogin, test_file.boobspassword,'sonyalpha', 247).likyLiky()
-    print(b)
     return JsonResponse({"urls": liked_urls})

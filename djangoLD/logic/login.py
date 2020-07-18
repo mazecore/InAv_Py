@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from selenium.webdriver.chrome.options import Options
+import djangoLD.test_file as test_file
 
 class LogIn:
     
@@ -13,7 +14,7 @@ class LogIn:
         self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--no-sandbox')
         self.chrome_options.add_argument('--disable-dev-shm-usage')
-        self.browser = webdriver.Chrome('/home/ubuntu/django/chromedriver', chrome_options=self.chrome_options)
+        self.browser = webdriver.Chrome(test_file.chrome_location, chrome_options=self.chrome_options)
         self.logInnn()
         self.refusingToTurnNotificationsOn()
         self.goingToProfilePage()
