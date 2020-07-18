@@ -46,7 +46,7 @@ class LikerFollower:
             actions = ActionChains(self.browser)
             try:
                like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")
-               user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/a").text
+               user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/span/a").text
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked:
