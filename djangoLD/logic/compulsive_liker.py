@@ -42,7 +42,7 @@ class LikerFollower:
         j = 0
         for i in self.picsURLs:
             self.browser.get(i)
-            sleep(2)
+            sleep(3)
             actions = ActionChains(self.browser)
             try:
                like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")

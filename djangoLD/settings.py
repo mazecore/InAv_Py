@@ -26,7 +26,7 @@ SECRET_KEY = test_file.secretKey
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ec2-54-175-162-21.compute-1.amazonaws.com','54.175.162.21']
+ALLOWED_HOSTS = ['ec2-54-175-162-21.compute-1.amazonaws.com','54.175.162.21', 'localhost']
 
 
 # Application definition
@@ -118,7 +118,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-#CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = ('http://localhost:8100', 'http://instavenger.s3-website-us-east-1.amazonaws.com/')
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+#CORS_ORIGIN_WHITELIST = ('http://localhost:8100', 'http://instavenger.s3-website-us-east-1.amazonaws.com')
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
