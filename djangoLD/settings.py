@@ -120,6 +120,6 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
-#CORS_ORIGIN_WHITELIST = ('http://localhost:8100', 'http://instavenger.s3-website-us-east-1.amazonaws.com')
+CORS_ORIGIN_WHITELIST = ('http://localhost:8100', 'http://instavenger.s3-website-us-east-1.amazonaws.com', '162.158.187.147')
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static/")
