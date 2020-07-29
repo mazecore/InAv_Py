@@ -11,6 +11,7 @@ class LikerFollower:
         self.number = numberOfPics
         self.browser = LogIn(uzr_name, p_word).browser
         self.last_liked = None
+        self.message = None
 
                   
     def loadTagsPage(self):
@@ -90,13 +91,23 @@ class LikerFollower:
 
 
     def likyLiky(self):
-        if self.browser:
+        if self.thereAreNoErrors():
             self.loadTagsPage()
             self.like()
             return  {"urls": self.picsURLs, "message": "Liking is complete!" }
         else:
-            return {"urls": None, "message": "Please go to your instagram and confirm new login and try again" }
+            return {"urls": None, "message": self.message }
     
+    def thereAreNoErrors(self):
+        print('checking if there is an error...')
+        error = self.browser.find_element_by_xpath("//*[@id='slfErrorAlert']")
+        if error:
+            print(error.text)
+            self.message = error.text
+            self.browser.close()
+            return False
+        return True
+
     def followFollow(self):
         self.loadTagsPage()
         self.follow()

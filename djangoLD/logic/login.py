@@ -55,8 +55,7 @@ class LogIn:
             sleep(1)
             self.goingToProfilePage()
         except:
-            self.browser.close()
-            self.browser = False
+            print("There was an error at login!")
             
 
     def goingToProfilePage(self):
