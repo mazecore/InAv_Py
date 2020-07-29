@@ -90,9 +90,12 @@ class LikerFollower:
 
 
     def likyLiky(self):
-        self.loadTagsPage()
-        self.like()
-        return self.picsURLs
+        if self.browser:
+            self.loadTagsPage()
+            self.like()
+            return  {"urls": self.picsURLs, "message": "Liking is complete!" }
+        else:
+            return {"urls": None, "message": "Please go to your instagram and confirm new login and try again" }
     
     def followFollow(self):
         self.loadTagsPage()

@@ -17,7 +17,6 @@ class LogIn:
         self.browser = webdriver.Chrome(test_file.chrome_location, chrome_options=self.chrome_options)
         self.logInnn()
         self.refusingToTurnNotificationsOn()
-        self.goingToProfilePage()
         sleep(3)
 
     def logInnn(self):
@@ -54,8 +53,10 @@ class LogIn:
             actions.click(notNowButton)
             actions.perform()
             sleep(1)
+            self.goingToProfilePage()
         except:
             self.browser.close()
+            self.browser = False
             
 
     def goingToProfilePage(self):
