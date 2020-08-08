@@ -14,6 +14,8 @@ def get_followers(HttpRequest):
 def update(HttpRequest):
     
     b = json.loads(HttpRequest.body)
+    
     response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).likyLiky()
-
+    # if response['error']:
+    #     return JsonResponse({'status':'false','message':response['message']}, status=401)
     return JsonResponse(response)

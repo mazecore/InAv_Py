@@ -94,19 +94,20 @@ class LikerFollower:
         if self.thereAreNoErrors():
             self.loadTagsPage()
             self.like()
-            return  {"urls": self.picsURLs, "message": "Liking is complete!" }
+            return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
         else:
-            return {"urls": None, "message": self.message }
+            return {"urls": None, "message": self.message, "error": True }
     
     def thereAreNoErrors(self):
         print('checking if there is an error...')
-        error = self.browser.find_element_by_xpath("//*[@id='slfErrorAlert']")
-        if error:
+        try:
+            error = self.browser.find_element_by_xpath("//*[@id='slfErrorAlert']")
             print(error.text)
             self.message = error.text
             self.browser.close()
             return False
-        return True
+        except:
+            return True
 
     def followFollow(self):
         self.loadTagsPage()

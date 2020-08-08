@@ -30,7 +30,7 @@ class LogIn:
         sleep(2)
         usrNameInput = self.browser.find_element_by_name('username')
         pWordInput = self.browser.find_element_by_name('password')
-        signInButton = self.browser.find_element_by_xpath('//*[@id="react-root"]/section/main/div/article/div/div[1]/div/form/div[4]/button')
+        signInButton = self.browser.find_element_by_xpath('//*[@id="loginForm"]/div/div[3]/button')
         print('logging in...')
         actions = ActionChains(self.browser)
         actions.move_to_element(usrNameInput)
