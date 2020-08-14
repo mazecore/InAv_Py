@@ -12,11 +12,12 @@ class LikerFollower:
         self.browser = LogIn(uzr_name, p_word).browser
         self.last_liked = None
         self.message = None
+        self.picsURLs = []
 
                   
     def loadTagsPage(self):
+        self.message = "Tags didn't load"
         self.browser.get('https://www.instagram.com/explore/tags/%s/' % self.tag)
-        self.picsURLs = []
         self.counter = 0
         self.thePics = []
 
@@ -36,9 +37,11 @@ class LikerFollower:
             self.counter = self.counter + 1
             sleep(2)
         self.picsURLs = self.picsURLs[9:]
+        self.message = "Tags did load"
 
 
     def like(self):
+        self.message = "Login and tagged list of photos did load. Liking didn't work."
         print('going to like. There are %s urls' % len(self.picsURLs))
         j = 0
         for i in self.picsURLs:
@@ -64,7 +67,8 @@ class LikerFollower:
             if j > self.number:
                        break
         self.browser.close()
-        
+        self.message = "Liking did work."
+
     def follow(self):
         print('going to follow. There are %s urls' % len(self.picsURLs))
         j = 0
@@ -92,11 +96,17 @@ class LikerFollower:
 
     def likyLiky(self):
         if self.thereAreNoErrors():
-            self.loadTagsPage()
-            self.like()
-            return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
+            try:
+                self.loadTagsPage()
+                self.like()
+                return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
+            except:
+                self.browser.close()
+                return {"urls": self.picsURLs, "message": self.message, "error": True }
         else:
             return {"urls": None, "message": self.message, "error": True }
+            
+
     
     def thereAreNoErrors(self):
         print('checking if there is an error...')
