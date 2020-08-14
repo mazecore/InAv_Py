@@ -56,6 +56,8 @@ class LogIn:
             self.goingToProfilePage()
         except:
             print("There was an error at login!")
+            self.browser.close()
+            self.browser = "Logged in but there was an error."
             
 
     def goingToProfilePage(self):

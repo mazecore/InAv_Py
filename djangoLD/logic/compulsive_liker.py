@@ -110,6 +110,8 @@ class LikerFollower:
     
     def thereAreNoErrors(self):
         print('checking if there is an error...')
+        if isinstance(self.browser, str):
+            return False
         try:
             error = self.browser.find_element_by_xpath("//*[@id='slfErrorAlert']")
             print(error.text)
