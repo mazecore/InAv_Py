@@ -54,8 +54,6 @@ class LogIn:
             actions.perform()
             sleep(1)
             self.goingToProfilePage()
-            self.browser.close()
-            self.browser = "Logged in but there was an error."
         except:
             print("There was an error at login!")
             self.browser.close()
