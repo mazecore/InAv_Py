@@ -98,7 +98,7 @@ class LikerFollower:
         if self.thereAreNoErrors():
             try:
                 self.loadTagsPage()
-                # self.like()
+                self.like()
                 return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
             except:
                 self.browser.close()
