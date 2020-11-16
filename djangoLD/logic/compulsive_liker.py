@@ -3,21 +3,57 @@ from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from .login import LogIn
 from bs4 import BeautifulSoup
+import json
 
 class LikerFollower:
     
-    def __init__(self, uzr_name, p_word, tag, numberOfPics):
-        self.tag = tag
+    def __init__(self, uzr_name, p_word, inputt, numberOfPics):
+        self.input = inputt
         self.number = numberOfPics
         self.browser = LogIn(uzr_name, p_word).browser
         self.last_liked = None
         self.message = None
         self.picsURLs = []
+        
+    def loadFollowers(self):
+        with open(self.input + '.json', 'r') as f:
+            return json.load(f)
+
+    def updateIndex(self, content, index):
+        content['index'] = index
+        file = open(self.input + '.json', 'w')
+        file = json.dump(content, file)
+
+    def collectFirstPhotosOfFollowers(self):
+        content = self.loadFollowers()
+        i = content['index']
+        #last_index = i + self.number
+        while len(self.picsURLs) < self.number + 20:
+            try:
+                self.browser.get('https://www.instagram.com' + content['followers'][i])
+                link = self.browser.find_element_by_xpath('//article[@*]/div/div/div/div/a').get_attribute('href')
+                if link:
+                    print('great success => ', link)
+                    self.picsURLs.append(link)
+                i += 1
+                print('added number inside the loop =>', i)
+                sleep(2)
+            except:
+                i += 1
+                print('added number on error =>', i)
+                sleep(1)
+                continue
+        self.updateIndex(content, i)
+
+    def likeAnothersFollowers(self):
+        self.collectFirstPhotosOfFollowers()
+        self.like()
+        return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
 
                   
     def loadTagsPage(self):
         self.message = "Tags didn't load"
-        self.browser.get('https://www.instagram.com/explore/tags/%s/' % self.tag)
+        self.browser.get('https://www.instagram.com/explore/tags/%s/' % self.input)
         self.counter = 0
         self.thePics = []
 
@@ -54,12 +90,12 @@ class LikerFollower:
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked:
-                   print('Liked!')
+                   print('==============================> PIC # ',j )
                    actions.pause(2)
                    actions.move_to_element(like)
                    actions.click(like)
                    self.last_liked = user_now_liked
-                   print('==============================> PIC # ',j )
+                   print('Liked!')
                    j = j + 1
             except:
                 actions.pause(1) 

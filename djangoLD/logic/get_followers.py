@@ -3,18 +3,29 @@ from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
 from bs4 import BeautifulSoup
 from .login import LogIn
+import json
 
 class FollowingFollowers:
     
-    def __init__(self, uzr_name, p_word, following_or_followers):
+    def __init__(self, uzr_name, p_word, following_or_followers, different_user):
         self.uzr_name = uzr_name
         self.followers_or_following = following_or_followers
+        self.different_user = different_user
         self.browser = LogIn(uzr_name, p_word).browser
         
+    def getDifferentUserFollowers(self):
+        self.browser.get('https://www.instagram.com/{}'.format(self.different_user))
+        content = { 'followers': self.get_em(), 'index': 0 }
+        file = open(self.different_user + '.json', 'w')
+        file = json.dump(content, file)
+        return content['followers']
         
     def gettingTotalNumber(self):
         print('getting %s...' % self.followers_or_following)
-        self.numberOfFollowers = self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text
+        n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text).replace('k', '000')
+        n = n.replace(',', '')
+        n = n.replace('m', '000000')
+        self.numberOfFollowers = int(n)
         print('number of {} is {}'.format(self.followers_or_following, self.numberOfFollowers))
         
     def goingToTheList(self):
@@ -34,10 +45,11 @@ class FollowingFollowers:
     def loopThisToScrollTheListOfFollowers(self):
         print('starting to loop...')
         multiple = .5
+        self.lookupMap = {}
         self.theList = []
         loop = 1
         try:
-            while len(self.theList) != int(self.numberOfFollowers):
+            while len(self.theList) != self.numberOfFollowers:
                 print(len(self.theList))
                 self.browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
                 print('executing loop number ', loop)
@@ -56,7 +68,7 @@ class FollowingFollowers:
                 self.createList(followerSoup.html.body.div)
                 loop = loop + 1
 
-                if len(self.theList) >= int(self.numberOfFollowers) - 1:
+                if len(self.theList) >= self.numberOfFollowers - 2:
                     print('got all the %s!' % self.followers_or_following)
                     close = self.browser.find_element_by_xpath('//button[@class="wpO6b "]')
                     ActionChains(self.browser)\
@@ -72,19 +84,15 @@ class FollowingFollowers:
     def createList(self, body):
         for li in body:
             print('-----------------------------------------------------usrName-----------------------------------------------------')
-            usrName = li.find_all(href = True)
-            print(usrName)
+            user = li.find_all(href = True)
+            print(user)
     #        img = li.find_all('img', src=True)
-            if usrName != []:
-                f = { 
-                      "user_name": usrName[0]['href'], 
-#                      "user_pic": img[0]['src'],
-#                      "MyUser": self.uzr_name
-                      }
-                if f not in self.theList:
-                   self.theList.append(f)
-            print(f)
-            
+            if user != []:
+               if user[0]['href'] not in self.lookupMap:
+                   self.lookupMap[user[0]['href']] = True
+                   self.theList.append(user[0]['href'])
+            print(user[0]['href'])
+
     def get_unfollowers(self):
         unfollowers = []
         self.followers_or_following = 'followers'

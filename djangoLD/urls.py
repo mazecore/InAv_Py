@@ -20,5 +20,7 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('followers/', views.get_followers ),
-    path('update/', views.update)
+    path('like_tag/', views.like_tags),
+    path('like_anothers_followers/', views.like_followers),
+    path('collect/', views.collect)
 ]

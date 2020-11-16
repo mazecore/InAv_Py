@@ -4,6 +4,7 @@ from . import test_file
 from .logic.get_followers import FollowingFollowers
 from .logic.compulsive_liker import LikerFollower
 from django.views.decorators.csrf import csrf_exempt
+from .logic import receiver
 import json
 
 def get_followers(HttpRequest):
@@ -11,7 +12,7 @@ def get_followers(HttpRequest):
     return JsonResponse(followers, safe=False)
 
 @csrf_exempt
-def update(HttpRequest):
+def like_tags(HttpRequest):
     
     b = json.loads(HttpRequest.body)
     
@@ -19,3 +20,23 @@ def update(HttpRequest):
     # if response['error']:
     #     return JsonResponse({'status':'false','message':response['message']}, status=401)
     return JsonResponse(response)
+
+@csrf_exempt
+def like_followers(HttpRequest):
+    
+    b = json.loads(HttpRequest.body)
+    
+    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).likeAnothersFollowers()
+    if response['error']:
+        return JsonResponse({'status':'false','message':response['message']}, status=401)
+    return JsonResponse(response)
+
+@csrf_exempt
+def collect(HttpRequest):
+    
+    b = json.loads(HttpRequest.body)
+    
+    response = receiver.collect(b)
+    if response['error']:
+        return JsonResponse({'status':'false','message':response['message']}, status=401)
+    return JsonResponse(response, safe=False)
