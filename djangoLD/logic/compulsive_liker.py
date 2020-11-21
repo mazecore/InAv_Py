@@ -37,6 +37,7 @@ class LikerFollower:
                     self.picsURLs.append(link)
                 i += 1
                 print('added number inside the loop =>', i)
+                print('collected %s pictures' % len(self.picsURLs))
                 sleep(2)
             except:
                 i += 1
@@ -100,8 +101,8 @@ class LikerFollower:
             except:
                 actions.pause(1) 
             actions.perform()
-            if j > self.number:
-                       break
+            # if j > self.number:
+            #            break
         self.browser.close()
         self.message = "Liking did work."
 

@@ -12,17 +12,26 @@ class FollowingFollowers:
         self.followers_or_following = following_or_followers
         self.different_user = different_user
         self.browser = LogIn(uzr_name, p_word).browser
+        self.json_content = { 'followers': [], 'pictures': {},'index': 0, 'total': 0 }
         
     def getDifferentUserFollowers(self):
         self.browser.get('https://www.instagram.com/{}'.format(self.different_user))
-        content = { 'followers': self.get_em(), 'index': 0 }
+        try:
+            with open(self.different_user + '.json', 'r') as f:
+                self.json_content = json.load(f)
+        except FileNotFoundError:
+            print(self.different_user + '.json file was not previously created.')
+        new_followers = self.get_em()
+        self.json_content['followers'] += new_followers
+        self.json_content['total'] = len(self.json_content['followers'])
         file = open(self.different_user + '.json', 'w')
-        file = json.dump(content, file)
-        return content['followers']
+        file = json.dump(self.json_content, file)
+        return new_followers
         
     def gettingTotalNumber(self):
         print('getting %s...' % self.followers_or_following)
         n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text).replace('k', '000')
+        n = n.replace('.', '')
         n = n.replace(',', '')
         n = n.replace('m', '000000')
         self.numberOfFollowers = int(n)
@@ -45,12 +54,11 @@ class FollowingFollowers:
     def loopThisToScrollTheListOfFollowers(self):
         print('starting to loop...')
         multiple = .5
-        self.lookupMap = {}
         self.theList = []
         loop = 1
         try:
             while len(self.theList) != self.numberOfFollowers:
-                print(len(self.theList))
+                print('list length on loop start:', len(self.theList))
                 self.browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
                 print('executing loop number ', loop)
                 sleep(1)
@@ -76,28 +84,29 @@ class FollowingFollowers:
                       .perform()
                     break
         except Exception as e:
-            print(len(self.theList))
+            print('list length on error:', len(self.theList))
             print('shit didnt work')
             print(e)
             self.browser.close()        
 
     def createList(self, body):
         for li in body:
-            print('-----------------------------------------------------usrName-----------------------------------------------------')
+            print('-------------------------------------------------usrName-------------------------------------------------')
             user = li.find_all(href = True)
-            print(user)
-    #        img = li.find_all('img', src=True)
+            #  print(user)
+            img = li.find_all('img', src=True)
             if user != []:
-               if user[0]['href'] not in self.lookupMap:
-                   self.lookupMap[user[0]['href']] = True
+               if user[0]['href'] not in self.json_content['pictures']:
+                   self.json_content['pictures'][user[0]['href']] = img[0]['src']
                    self.theList.append(user[0]['href'])
-            print(user[0]['href'])
+                   print('added user: ', user[0]['href'])
 
     def get_unfollowers(self):
         unfollowers = []
         self.followers_or_following = 'followers'
         followers = self.get_em()
         self.followers_or_following = 'following'
+        self.json_content['pictures'] = {}
         following = self.get_em()
         for i in following:
            if i not in followers:
