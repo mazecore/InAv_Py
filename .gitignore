@@ -1,2 +1,4 @@
 test_file.py
 __pycache__
+*.json
+*.log
