@@ -4,6 +4,7 @@ from time import sleep
 from .login import LogIn
 from bs4 import BeautifulSoup
 import json
+import winsound
 
 class LikerFollower:
     
@@ -31,6 +32,7 @@ class LikerFollower:
         while len(self.picsURLs) < self.number + 20:
             try:
                 self.browser.get('https://www.instagram.com' + content['followers'][i])
+                sleep(3)
                 link = self.browser.find_element_by_xpath('//article[@*]/div/div/div/div/a').get_attribute('href')
                 if link:
                     print('great success => ', link)
@@ -38,11 +40,25 @@ class LikerFollower:
                 i += 1
                 print('added number inside the loop =>', i)
                 print('collected %s pictures' % len(self.picsURLs))
-                sleep(2)
-            except:
-                i += 1
-                print('added number on error =>', i)
                 sleep(1)
+            except:
+                print(content['followers'][i].replace("/", ""))
+                try:
+                    private_account = self.browser.find_element_by_xpath('//*[text() = "%s"]' % content['followers'][i].replace("/", ""))
+                    i += 1
+                    print('added number on private account error =>', i)
+                    sleep(1)
+                except:
+                    try:
+                       unavailble = self.browser.find_element_by_xpath ('//*[text() =  "Sorry, this page isn\'t available."]')
+                       i+=1
+                       print('added number on unavailable account error =>', i)
+                       sleep(1)
+                    except:
+                        winsound.PlaySound('C:\Windows\Media\Windows Proximity Connection.wav', winsound.SND_FILENAME)
+                        print('encountered shitty error. waiting for input')
+                        sleep(50)
+                    continue
                 continue
         self.updateIndex(content, i)
 
@@ -62,7 +78,7 @@ class LikerFollower:
             self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
             sleep(2)
             self.thePics = self.browser.find_elements_by_xpath('//a[contains(@href,"/p/")]')
-            sleep(1)
+            sleep(2)
             for pic in self.thePics:
                 try:
                     url = pic.get_attribute('href')
@@ -81,6 +97,7 @@ class LikerFollower:
         self.message = "Login and tagged list of photos did load. Liking didn't work."
         print('going to like. There are %s urls' % len(self.picsURLs))
         j = 0
+        t = 0
         for i in self.picsURLs:
             self.browser.get(i)
             sleep(3)
@@ -96,10 +113,12 @@ class LikerFollower:
                    actions.move_to_element(like)
                    actions.click(like)
                    self.last_liked = user_now_liked
-                   print('Liked!')
+                   print('Liked %s !' % user_now_liked)
                    j = j + 1
+               t = t + 1
+               print('total:', t)
             except:
-                actions.pause(1) 
+                actions.pause(1)
             actions.perform()
             # if j > self.number:
             #            break
