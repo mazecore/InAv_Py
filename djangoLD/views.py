@@ -28,7 +28,7 @@ def like_followers(HttpRequest):
     
     response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).likeAnothersFollowers()
     if response['error']:
-        return JsonResponse({'status':'false','message':response['message']}, status=401)
+        return JsonResponse({'status':'false','message':response['message']}, status=500)
     return JsonResponse(response)
 
 @csrf_exempt
@@ -38,5 +38,15 @@ def collect(HttpRequest):
     
     response = receiver.collect(b)
     if response['error']:
-        return JsonResponse({'status':'false','message':response['message']}, status=401)
+        return JsonResponse({'status':'false','message':response['message']}, status=500)
     return JsonResponse(response, safe=False)
+
+@csrf_exempt
+def collect_photos(HttpRequest):
+    
+    b = json.loads(HttpRequest.body)
+    
+    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).collectFirstPhotosOfFollowers()
+    if response['error']:
+        return JsonResponse({'status':'false','message':response['message']}, status=500)
+    return JsonResponse(response)

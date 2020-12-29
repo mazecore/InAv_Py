@@ -22,5 +22,6 @@ urlpatterns = [
     path('followers/', views.get_followers ),
     path('like_tag/', views.like_tags),
     path('like_anothers_followers/', views.like_followers),
-    path('collect/', views.collect)
+    path('collect/', views.collect),
+    path('collect_photos/', views.collect_photos)
 ]

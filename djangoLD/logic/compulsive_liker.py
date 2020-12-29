@@ -15,24 +15,35 @@ class LikerFollower:
         self.last_liked = None
         self.message = None
         self.picsURLs = []
+        self.photolinks = None
         
     def loadFollowers(self):
         with open(self.input + '.json', 'r') as f:
+            return json.load(f)
+
+    def loadPics(self):
+        with open(self.input + '_photolinks' + '.json', 'r') as f:
             return json.load(f)
 
     def updateIndex(self, content, index):
         content['index'] = index
         file = open(self.input + '.json', 'w')
         file = json.dump(content, file)
+        print(self.picsURLs)
+        self.photolinks = self.loadPics()
+        self.photolinks["links"] += self.picsURLs
+        self.photolinks["total"] = len(self.photolinks["links"])
+        file = open(self.input + '_photolinks' + '.json', 'w')
+        file = json.dump(self.photolinks, file)
 
     def collectFirstPhotosOfFollowers(self):
         content = self.loadFollowers()
         i = content['index']
         #last_index = i + self.number
-        while len(self.picsURLs) < self.number + 20:
+        while len(self.picsURLs) < self.number:
             try:
                 self.browser.get('https://www.instagram.com' + content['followers'][i])
-                sleep(3)
+                sleep(5)
                 link = self.browser.find_element_by_xpath('//article[@*]/div/div/div/div/a').get_attribute('href')
                 if link:
                     print('great success => ', link)
@@ -40,14 +51,14 @@ class LikerFollower:
                 i += 1
                 print('added number inside the loop =>', i)
                 print('collected %s pictures' % len(self.picsURLs))
-                sleep(1)
+                sleep(4)
             except:
                 print(content['followers'][i].replace("/", ""))
                 try:
                     private_account = self.browser.find_element_by_xpath('//*[text() = "%s"]' % content['followers'][i].replace("/", ""))
                     i += 1
                     print('added number on private account error =>', i)
-                    sleep(1)
+                    sleep(3)
                 except:
                     try:
                        unavailble = self.browser.find_element_by_xpath ('//*[text() =  "Sorry, this page isn\'t available."]')
@@ -55,16 +66,29 @@ class LikerFollower:
                        print('added number on unavailable account error =>', i)
                        sleep(1)
                     except:
-                        winsound.PlaySound('C:\Windows\Media\Windows Proximity Connection.wav', winsound.SND_FILENAME)
-                        print('encountered shitty error. waiting for input')
-                        sleep(50)
+                        try:
+                            finsh = self.browser.find_element_by_xpath ('//*[text() =  "Please wait a few minutes before you try again."]')
+                            winsound.PlaySound('C:\Windows\Media\Windows Proximity Connection.wav', winsound.SND_FILENAME)
+                            print('this is it. stopping on ', i)
+                            break
+                        except:
+                            winsound.PlaySound('C:\Windows\Media\Windows Proximity Connection.wav', winsound.SND_FILENAME)
+                            print('encountered shitty error on ', i)
+                            break
                     continue
                 continue
         self.updateIndex(content, i)
+        return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
 
     def likeAnothersFollowers(self):
-        self.collectFirstPhotosOfFollowers()
-        self.like()
+        # self.collectFirstPhotosOfFollowers()
+        self.photolinks = self.loadPics()
+        self.picsURLs = self.photolinks["links"][self.photolinks["index"]:self.photolinks["index"]+250]
+        if len(self.picsURLs) < 1:
+            print('There are no photolinks to like.')
+        else:
+            print(self.picsURLs)
+            self.like()
         return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
 
                   
