@@ -22,17 +22,27 @@ class LikerFollower:
             return json.load(f)
 
     def loadPics(self):
-        with open(self.input + '_photolinks' + '.json', 'r') as f:
-            return json.load(f)
+        try:
+            with open(self.input + '_photolinks' + '.json', 'r') as f:
+                return json.load(f)
+        except:
+            return {"links": []}
 
     def updateIndex(self, content, index):
+        print('Updading index of followers links and adding photolinks...')
         content['index'] = index
         file = open(self.input + '.json', 'w')
         file = json.dump(content, file)
         print(self.picsURLs)
         self.photolinks = self.loadPics()
         self.photolinks["links"] += self.picsURLs
+        if not self.photolinks["index"]:
+           self.photolinks["index"] = 0
         self.photolinks["total"] = len(self.photolinks["links"])
+        self.updatePhotoLinks()
+    
+    def updatePhotoLinks(self):
+        print('Updading photolinks...')
         file = open(self.input + '_photolinks' + '.json', 'w')
         file = json.dump(self.photolinks, file)
 
@@ -89,6 +99,7 @@ class LikerFollower:
         else:
             print(self.picsURLs)
             self.like()
+            self.browser.close()
         return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
 
                   
@@ -121,7 +132,7 @@ class LikerFollower:
         self.message = "Login and tagged list of photos did load. Liking didn't work."
         print('going to like. There are %s urls' % len(self.picsURLs))
         j = 0
-        t = 0
+        t = 1
         for i in self.picsURLs:
             self.browser.get(i)
             sleep(3)
@@ -146,7 +157,9 @@ class LikerFollower:
             actions.perform()
             # if j > self.number:
             #            break
-        self.browser.close()
+        if self.photolinks:
+            self.photolinks["index"] = self.photolinks["index"] + t
+            self.updatePhotoLinks()
         self.message = "Liking did work."
 
     def follow(self):
@@ -179,6 +192,7 @@ class LikerFollower:
             try:
                 self.loadTagsPage()
                 self.like()
+                self.browser.close()
                 return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
             except:
                 self.browser.close()
