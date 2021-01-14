@@ -36,7 +36,7 @@ class LikerFollower:
         print(self.picsURLs)
         self.photolinks = self.loadPics()
         self.photolinks["links"] += self.picsURLs
-        if not self.photolinks["index"]:
+        if "index" not in self.photolinks:
            self.photolinks["index"] = 0
         self.photolinks["total"] = len(self.photolinks["links"])
         self.updatePhotoLinks()
