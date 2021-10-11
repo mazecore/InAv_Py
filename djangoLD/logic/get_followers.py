@@ -78,7 +78,7 @@ class FollowingFollowers:
 
                 if len(self.theList) >= self.numberOfFollowers - 2:
                     print('got all the %s!' % self.followers_or_following)
-                    close = self.browser.find_element_by_xpath('//button[@class="wpO6b "]')
+                    close = self.browser.find_element_by_xpath('//button[@class="wpO6b  "]')
                     ActionChains(self.browser)\
                       .move_to_element(close).click()\
                       .perform()

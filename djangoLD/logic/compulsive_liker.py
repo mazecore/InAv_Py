@@ -5,6 +5,7 @@ from .login import LogIn
 from bs4 import BeautifulSoup
 import json
 import winsound
+import random
 
 class LikerFollower:
     
@@ -53,7 +54,7 @@ class LikerFollower:
         while len(self.picsURLs) < self.number:
             try:
                 self.browser.get('https://www.instagram.com' + content['followers'][i])
-                sleep(5)
+                sleep(random.randint(3,8))
                 link = self.browser.find_element_by_xpath('//article[@*]/div/div/div/div/a').get_attribute('href')
                 if link:
                     print('great success => ', link)
@@ -61,7 +62,7 @@ class LikerFollower:
                 i += 1
                 print('added number inside the loop =>', i)
                 print('collected %s pictures' % len(self.picsURLs))
-                sleep(4)
+                sleep(random.randint(4,20))
             except:
                 print(content['followers'][i].replace("/", ""))
                 try:
@@ -135,7 +136,7 @@ class LikerFollower:
         t = 1
         for i in self.picsURLs:
             self.browser.get(i)
-            sleep(3)
+            sleep(4)
             actions = ActionChains(self.browser)
             try:
                like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")
@@ -144,8 +145,9 @@ class LikerFollower:
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked:
                    print('==============================> PIC # ',j )
-                   actions.pause(2)
+                   actions.pause(3)
                    actions.move_to_element(like)
+                   actions.pause(2)
                    actions.click(like)
                    self.last_liked = user_now_liked
                    print('Liked %s !' % user_now_liked)
@@ -153,7 +155,7 @@ class LikerFollower:
                t = t + 1
                print('total:', t)
             except:
-                actions.pause(1)
+                actions.pause(2)
             actions.perform()
             # if j > self.number:
             #            break
