@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import json
 import winsound
 import random
+import djangoLD.test_file as test_file
 
 class LikerFollower:
     
@@ -143,7 +144,7 @@ class LikerFollower:
                user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/span/a").text
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
-               if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked:
+               if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
                    print('==============================> PIC # ',j )
                    actions.pause(3)
                    actions.move_to_element(like)
