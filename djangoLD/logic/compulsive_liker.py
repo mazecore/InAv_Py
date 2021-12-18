@@ -52,7 +52,7 @@ class LikerFollower:
         content = self.loadFollowers()
         i = content['index']
         #last_index = i + self.number
-        while len(self.picsURLs) < self.number:
+        while len(self.picsURLs) < self.number and i < len(content['followers']):
             try:
                 self.browser.get('https://www.instagram.com' + content['followers'][i])
                 sleep(random.randint(3,8))
@@ -65,8 +65,8 @@ class LikerFollower:
                 print('collected %s pictures' % len(self.picsURLs))
                 sleep(random.randint(4,20))
             except:
-                print(content['followers'][i].replace("/", ""))
                 try:
+                    print(content['followers'][i].replace("/", ""))
                     private_account = self.browser.find_element_by_xpath('//*[text() = "%s"]' % content['followers'][i].replace("/", ""))
                     i += 1
                     print('added number on private account error =>', i)
