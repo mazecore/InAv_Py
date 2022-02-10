@@ -30,10 +30,11 @@ class FollowingFollowers:
         
     def gettingTotalNumber(self):
         print('getting %s...' % self.followers_or_following)
-        n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text).replace('k', '000')
+        n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/div/span' % self.followers_or_following).text).replace('k', '000')
         n = n.replace('.', '')
         n = n.replace(',', '')
         n = n.replace('m', '000000')
+        print(n)
         self.numberOfFollowers = int(n)
         print('number of {} is {}'.format(self.followers_or_following, self.numberOfFollowers))
         

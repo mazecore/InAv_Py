@@ -7,6 +7,7 @@ import json
 import winsound
 import random
 import djangoLD.test_file as test_file
+# import lxml, lxml.html
 
 class LikerFollower:
     
@@ -157,18 +158,16 @@ class LikerFollower:
                    print('conditions of the like buttons were not met')
                    print('like button: %s' % like)
                    print('user_now_liked: %s' % user_now_liked)
-                   print('likeSoup.div.svg["aria-label"] == "Like": %s' % likeSoup.div.svg['aria-label'] == "Like")
-                   print('likeSoup: %s' % likeSoup)
-                   print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
+                #    print(lxml.html.tostring(likeSoup))
+                #    print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
                t = t + 1
                print('total:', t)
             except:
                 print('error occured')
                 print('like button: %s' % like)
                 print('user_now_liked: %s' % user_now_liked)
-                print('likeSoup.div.svg["aria-label"] == "Like": %s' % likeSoup.div.svg['aria-label'] == "Like")
-                print('likeSoup: %s' % likeSoup)
-                print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
+                # print(lxml.html.tostring(likeSoup))
+                # print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
                 actions.pause(2)
             actions.perform()
             # if j > self.number:
