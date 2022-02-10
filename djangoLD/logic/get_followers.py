@@ -142,6 +142,6 @@ class FollowingFollowers:
         sleep(3)
         self.gettingTotalNumber()
         self.goingToTheList()
-        sleep(1)
+        sleep(10)
         self.loopThisToScrollTheListOfFollowers()
         return self.theList

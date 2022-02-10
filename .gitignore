@@ -2,3 +2,4 @@ test_file.py
 __pycache__
 *.json
 *.log
+django_api

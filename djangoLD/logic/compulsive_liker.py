@@ -141,10 +141,10 @@ class LikerFollower:
             actions = ActionChains(self.browser)
             try:
                like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")
-               user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/span/a").text
+               user_now_liked = self.browser.find_element_by_xpath("//div[@class='_7UhW9   xLCgt        qyrsm KV-D4          uL8Hv        T0kll ']/span/a").text
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
-               if likeSoup.body.svg['aria-label'] == "Like" and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
+               if likeSoup.findAll('svg', {"aria-label": "Like"}) and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
                    print('==============================> PIC # ',j )
                    actions.pause(3)
                    actions.move_to_element(like)
@@ -153,9 +153,22 @@ class LikerFollower:
                    self.last_liked = user_now_liked
                    print('Liked %s !' % user_now_liked)
                    j = j + 1
+               else:
+                   print('conditions of the like buttons were not met')
+                   print('like button: %s' % like)
+                   print('user_now_liked: %s' % user_now_liked)
+                   print('likeSoup.div.svg["aria-label"] == "Like": %s' % likeSoup.div.svg['aria-label'] == "Like")
+                   print('likeSoup: %s' % likeSoup)
+                   print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
                t = t + 1
                print('total:', t)
             except:
+                print('error occured')
+                print('like button: %s' % like)
+                print('user_now_liked: %s' % user_now_liked)
+                print('likeSoup.div.svg["aria-label"] == "Like": %s' % likeSoup.div.svg['aria-label'] == "Like")
+                print('likeSoup: %s' % likeSoup)
+                print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
                 actions.pause(2)
             actions.perform()
             # if j > self.number:
