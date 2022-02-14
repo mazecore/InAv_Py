@@ -23,5 +23,6 @@ urlpatterns = [
     path('like_tag/', views.like_tags),
     path('like_anothers_followers/', views.like_followers),
     path('collect/', views.collect),
-    path('collect_photos/', views.collect_photos)
+    path('collect_photos/', views.collect_photos),
+    path('collect_photos/stop', views.stop_collection)
 ]

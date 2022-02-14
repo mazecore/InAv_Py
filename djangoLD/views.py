@@ -50,3 +50,10 @@ def collect_photos(HttpRequest):
     if response['error']:
         return JsonResponse({'status':'false','message':response['message']}, status=500)
     return JsonResponse(response)
+
+@csrf_exempt
+def stop_collection(HttpRequest):
+    
+    with open('stopper.json', 'w') as file:
+        json.dump({"manual_stop" : True}, file)
+    return HttpResponse(200)

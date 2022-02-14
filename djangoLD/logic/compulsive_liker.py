@@ -24,6 +24,19 @@ class LikerFollower:
         with open(self.input + '.json', 'r') as f:
             return json.load(f)
 
+    def get_manual_stopper(self):
+        try:
+            with open('stopper.json', 'r') as f:
+                value = json.load(f)["manual_stop"]
+                print('manual_stopper: %s' % value)
+                return value
+        except:
+            print('couldnt get manual stopper')
+        
+    def reset_manual_stopper(self):
+        with open('stopper.json', 'w') as file:
+            json.dump({"manual_stop" : False}, file)
+
     def loadPics(self):
         try:
             with open(self.input + '_photolinks' + '.json', 'r') as f:
@@ -52,10 +65,12 @@ class LikerFollower:
     def collectFirstPhotosOfFollowers(self):
         content = self.loadFollowers()
         i = content['index']
+        manual_stop = False
         #last_index = i + self.number
-        while len(self.picsURLs) < self.number and i < len(content['followers']):
+        while len(self.picsURLs) < self.number and i < len(content['followers']) and not manual_stop:
             try:
                 self.browser.get('https://www.instagram.com' + content['followers'][i])
+                manual_stop = self.get_manual_stopper()
                 sleep(random.randint(3,8))
                 link = self.browser.find_element_by_xpath('//article[@*]/div/div/div/div/a').get_attribute('href')
                 if link:
@@ -91,6 +106,7 @@ class LikerFollower:
                     continue
                 continue
         self.updateIndex(content, i)
+        self.reset_manual_stopper()
         return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
 
     def likeAnothersFollowers(self):
