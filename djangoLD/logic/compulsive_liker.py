@@ -7,11 +7,12 @@ import json
 import winsound
 import random
 import djangoLD.test_file as test_file
+import os
 # import lxml, lxml.html
 
 class LikerFollower:
     
-    def __init__(self, uzr_name, p_word, inputt, numberOfPics):
+    def __init__(self, uzr_name, p_word, inputt, numberOfPics, shut_down):
         self.input = inputt
         self.number = numberOfPics
         self.browser = LogIn(uzr_name, p_word).browser
@@ -19,6 +20,7 @@ class LikerFollower:
         self.message = None
         self.picsURLs = []
         self.photolinks = None
+        self.shut_down = shut_down
         
     def loadFollowers(self):
         with open(self.input + '.json', 'r') as f:
@@ -107,6 +109,8 @@ class LikerFollower:
                 continue
         self.updateIndex(content, i)
         self.reset_manual_stopper()
+        if self.shut_down:
+            os.system("shutdown /s /t 1")
         return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
 
     def likeAnothersFollowers(self):

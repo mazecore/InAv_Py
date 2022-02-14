@@ -46,7 +46,7 @@ def collect_photos(HttpRequest):
     
     b = json.loads(HttpRequest.body)
     
-    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).collectFirstPhotosOfFollowers()
+    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes'], b['shutDown']).collectFirstPhotosOfFollowers()
     if response['error']:
         return JsonResponse({'status':'false','message':response['message']}, status=500)
     return JsonResponse(response)
