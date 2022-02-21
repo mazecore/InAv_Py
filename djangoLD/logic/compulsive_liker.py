@@ -178,16 +178,12 @@ class LikerFollower:
                    print('conditions of the like buttons were not met')
                    print('like button: %s' % like)
                    print('user_now_liked: %s' % user_now_liked)
-                #    print(lxml.html.tostring(likeSoup))
-                #    print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
                t = t + 1
                print('total:', t)
             except:
                 print('error occured')
                 print('like button: %s' % like)
                 print('user_now_liked: %s' % user_now_liked)
-                # print(lxml.html.tostring(likeSoup))
-                # print('likeSoup.findAll("svg", {"aria-label": "Like"}): %s' % likeSoup.findAll('svg', {"aria-label": "Like"}))
                 actions.pause(2)
             actions.perform()
             # if j > self.number:

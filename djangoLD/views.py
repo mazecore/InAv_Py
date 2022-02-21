@@ -16,7 +16,7 @@ def like_tags(HttpRequest):
     
     b = json.loads(HttpRequest.body)
     
-    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).likyLiky()
+    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes'], b['shutDown']).likyLiky()
     # if response['error']:
     #     return JsonResponse({'status':'false','message':response['message']}, status=401)
     return JsonResponse(response)
@@ -26,7 +26,7 @@ def like_followers(HttpRequest):
     
     b = json.loads(HttpRequest.body)
     
-    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes']).likeAnothersFollowers()
+    response = LikerFollower(b['login'], b['password'], b['tag'], b['numberOfLikes'], b['shutDown']).likeAnothersFollowers()
     if response['error']:
         return JsonResponse({'status':'false','message':response['message']}, status=500)
     return JsonResponse(response)
