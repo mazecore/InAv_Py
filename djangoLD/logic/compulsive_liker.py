@@ -160,9 +160,11 @@ class LikerFollower:
             self.browser.get(i)
             sleep(4)
             actions = ActionChains(self.browser)
+            like = "not yet defined"
+            user_now_liked = "not yet defined"
             try:
                like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")
-               user_now_liked = self.browser.find_element_by_xpath("//div[@class='_7UhW9   xLCgt        qyrsm KV-D4          uL8Hv        T0kll ']/span/a").text
+               user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/div/span/a").text
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.findAll('svg', {"aria-label": "Like"}) and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
