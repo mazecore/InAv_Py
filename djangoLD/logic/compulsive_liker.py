@@ -68,31 +68,40 @@ class LikerFollower:
         content = self.loadFollowers()
         i = content['index']
         manual_stop = False
+        tried_one_more_time = False
+        sorry_pages = 0
         #last_index = i + self.number
         while len(self.picsURLs) < self.number and i < len(content['followers']) and not manual_stop:
             try:
                 self.browser.get('https://www.instagram.com' + content['followers'][i])
                 manual_stop = self.get_manual_stopper()
-                sleep(random.randint(3,8))
+                sleep(random.randint(10,16))
                 link = self.browser.find_element_by_xpath('//article[@*]/div/div/div/div/a').get_attribute('href')
                 if link:
                     print('great success => ', link)
                     self.picsURLs.append(link)
                 i += 1
+                sorry_pages = 0
                 print('added number inside the loop =>', i)
                 print('collected %s pictures' % len(self.picsURLs))
-                sleep(random.randint(4,20))
+                sleep(random.randint(4,10))
             except:
                 try:
                     print(content['followers'][i].replace("/", ""))
                     private_account = self.browser.find_element_by_xpath('//*[text() = "%s"]' % content['followers'][i].replace("/", ""))
                     i += 1
+                    sorry_pages = 0
                     print('added number on private account error =>', i)
                     sleep(3)
                 except:
                     try:
                        unavailble = self.browser.find_element_by_xpath ('//*[text() =  "Sorry, this page isn\'t available."]')
                        i+=1
+                       sorry_pages+=1
+                       if sorry_pages > 5:
+                           if i > 5:
+                                i-=5
+                           break
                        print('added number on unavailable account error =>', i)
                        sleep(1)
                     except:
@@ -104,7 +113,11 @@ class LikerFollower:
                         except:
                             winsound.PlaySound('C:\Windows\Media\Windows Proximity Connection.wav', winsound.SND_FILENAME)
                             print('encountered shitty error on ', i)
-                            break
+                            if tried_one_more_time:
+                                break
+                            else:
+                                tried_one_more_time = True
+                                continue
                     continue
                 continue
         self.updateIndex(content, i)
@@ -131,6 +144,7 @@ class LikerFollower:
         self.browser.get('https://www.instagram.com/explore/tags/%s/' % self.input)
         self.counter = 0
         self.thePics = []
+        lastNumberOfPicturesCollected = 0
 
         while len(self.picsURLs) < self.number + 20 and self.counter < 100:
             self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
@@ -144,7 +158,10 @@ class LikerFollower:
                        self.picsURLs.append(url)
                 except:
                     print('didnt work')
-            print('number of pictures collected ========>', len(self.picsURLs))
+            if lastNumberOfPicturesCollected == len(self.picsURLs):
+                self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight - 2000);')
+            lastNumberOfPicturesCollected = len(self.picsURLs)
+            print('number of pictures collected ========>', lastNumberOfPicturesCollected)
             self.counter = self.counter + 1
             sleep(2)
         self.picsURLs = self.picsURLs[9:]
@@ -160,11 +177,11 @@ class LikerFollower:
             self.browser.get(i)
             sleep(4)
             actions = ActionChains(self.browser)
-            like = "not yet defined"
-            user_now_liked = "not yet defined"
+            like = "like is not yet defined"
+            user_now_liked = "user is not yet defined"
             try:
-               like = self.browser.find_element_by_xpath("//span[@class='fr66n']/button")
-               user_now_liked = self.browser.find_element_by_xpath("//div[@class='e1e1d']/div/span/a").text
+               like = self.browser.find_element_by_xpath("//span[@class='_aamw']/button")
+               user_now_liked = self.browser.find_element_by_xpath("//div[@class='_aaqt']/div/span/a").text
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.findAll('svg', {"aria-label": "Like"}) and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:

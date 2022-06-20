@@ -33,7 +33,9 @@ class FollowingFollowers:
         n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/div/span' % self.followers_or_following).text).replace('k', '000')
         n = n.replace('.', '')
         n = n.replace(',', '')
+        n = n.replace('K', '000')
         n = n.replace('m', '000000')
+        n = n.replace('M', '000000')
         print(n)
         self.numberOfFollowers = int(n)
         print('number of {} is {}'.format(self.followers_or_following, self.numberOfFollowers))
@@ -57,16 +59,18 @@ class FollowingFollowers:
         multiple = .5
         self.theList = []
         loop = 1
+        dead_end_detector = []
         try:
             while len(self.theList) != self.numberOfFollowers:
                 print('list length on loop start:', len(self.theList))
-                self.browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
+                dead_end_detector.append(len(self.theList))
+                self.browser.execute_script('(document.getElementsByClassName("_aano"))[0].scrollTo(0, {}*(document.getElementsByClassName("_aano"))[0].scrollHeight);'.format(multiple))
                 print('executing loop number ', loop)
                 sleep(1)
                 multiple = multiple + 0.1
-                self.browser.execute_script('(document.getElementsByClassName("isgrP"))[0].scrollTo(0, {}*(document.getElementsByClassName("isgrP"))[0].scrollHeight);'.format(multiple))
+                self.browser.execute_script('(document.getElementsByClassName("_aano"))[0].scrollTo(0, {}*(document.getElementsByClassName("_aano"))[0].scrollHeight);'.format(multiple))
                 sleep(1)
-                followersList = self.browser.find_element_by_xpath('//div[@class="isgrP"]/ul')
+                followersList = self.browser.find_element_by_xpath('//div[@class="_aano"]/ul')
                 ActionChains(self.browser)\
                       .move_to_element(followersList)\
                       .perform()
@@ -79,16 +83,28 @@ class FollowingFollowers:
 
                 if len(self.theList) >= self.numberOfFollowers - 2:
                     print('got all the %s!' % self.followers_or_following)
-                    close = self.browser.find_element_by_xpath('//button[@class="wpO6b  "]')
-                    ActionChains(self.browser)\
-                      .move_to_element(close).click()\
-                      .perform()
+                    self.close()
                     break
+
+                if dead_end_detector[-1] == len(self.theList):
+                    dead_end_detector.append(len(self.theList))
+                    if len(dead_end_detector) > 10:
+                        self.close()
+                else:
+                    if len(dead_end_detector):
+                        dead_end_detector.pop()
+                    
         except Exception as e:
             print('list length on error:', len(self.theList))
             print('shit didnt work')
             print(e)
-            self.browser.close()        
+            self.browser.close()       
+    
+    def close(self):
+        close = self.browser.find_element_by_xpath('//button[@class="wpO6b  "]')
+        ActionChains(self.browser)\
+            .move_to_element(close).click()\
+            .perform() 
 
     def createList(self, body):
         for li in body:

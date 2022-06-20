@@ -14,6 +14,7 @@ class LogIn:
         # self.chrome_options.add_argument('--headless')
         self.chrome_options.add_argument('--no-sandbox')
         self.chrome_options.add_argument('--disable-dev-shm-usage')
+        self.chrome_options.add_argument('--ignore-certificate-errors-spki-list')
         self.browser = webdriver.Chrome(test_file.chrome_location, chrome_options=self.chrome_options)
         self.logInnn()
         self.refusingToTurnNotificationsOn()
@@ -53,7 +54,7 @@ class LogIn:
             actions.click(notNowButton)
             actions.perform()
             sleep(1)
-            self.goingToProfilePage()
+            # self.goingToProfilePage()
         except:
             print("There was an error at login!")
             self.browser.close()
