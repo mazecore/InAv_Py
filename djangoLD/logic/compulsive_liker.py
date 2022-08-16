@@ -177,11 +177,11 @@ class LikerFollower:
             self.browser.get(i)
             sleep(4)
             actions = ActionChains(self.browser)
-            like = "like is not yet defined"
-            user_now_liked = "user is not yet defined"
+            like = ""
+            user_now_liked = ""
             try:
                like = self.browser.find_element_by_xpath("//span[@class='_aamw']/button")
-               user_now_liked = self.browser.find_element_by_xpath("//div[@class='_aaqt']/div/span/a").text
+               user_now_liked = self.browser.find_element_by_xpath("//div[@class='_ab8w  _ab94 _ab97 _ab9f _ab9k _ab9p _abcm']/div/span/a").text
                likeNodes = like.get_attribute('innerHTML')
                likeSoup = BeautifulSoup(likeNodes, 'lxml')
                if likeSoup.findAll('svg', {"aria-label": "Like"}) and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
@@ -191,7 +191,7 @@ class LikerFollower:
                    actions.pause(2)
                    actions.click(like)
                    self.last_liked = user_now_liked
-                   print('Liked %s !' % user_now_liked)
+                   print('Liked "%s" !' % user_now_liked)
                    j = j + 1
                else:
                    print('conditions of the like buttons were not met')

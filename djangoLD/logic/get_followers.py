@@ -70,7 +70,7 @@ class FollowingFollowers:
                 multiple = multiple + 0.1
                 self.browser.execute_script('(document.getElementsByClassName("_aano"))[0].scrollTo(0, {}*(document.getElementsByClassName("_aano"))[0].scrollHeight);'.format(multiple))
                 sleep(1)
-                followersList = self.browser.find_element_by_xpath('//div[@class="_aano"]/ul')
+                followersList = self.browser.find_element_by_xpath('//div[@class="_aano"]/div')
                 ActionChains(self.browser)\
                       .move_to_element(followersList)\
                       .perform()
@@ -159,6 +159,6 @@ class FollowingFollowers:
         sleep(3)
         self.gettingTotalNumber()
         self.goingToTheList()
-        sleep(10)
+        sleep(13)
         self.loopThisToScrollTheListOfFollowers()
         return self.theList

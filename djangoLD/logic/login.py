@@ -45,15 +45,16 @@ class LogIn:
         actions.perform()
     
     def refusingToTurnNotificationsOn(self):
+        print('waiting for 7 sec...')
+        sleep(7)
         print('refusing to turn notifications on...')
-        sleep(5)
         try:
             notNowButton = self.browser.find_element_by_xpath("//*[contains(text(),'Not Now')]")
             actions = ActionChains(self.browser)
             actions.move_to_element(notNowButton)
             actions.click(notNowButton)
             actions.perform()
-            sleep(1)
+            sleep(2)
             # self.goingToProfilePage()
         except:
             print("There was an error at login!")
