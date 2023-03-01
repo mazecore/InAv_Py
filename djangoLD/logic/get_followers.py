@@ -42,6 +42,7 @@ class FollowingFollowers:
         
     def goingToTheList(self):
         self.followersLink = self.browser.find_element_by_xpath('//a[contains(@href, "%s")]' % self.followers_or_following)
+        print(self.followersLink)
         ActionChains(self.browser)\
           .move_to_element(self.followersLink).click()\
           .perform()

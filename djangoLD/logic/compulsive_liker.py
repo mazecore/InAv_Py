@@ -181,22 +181,26 @@ class LikerFollower:
             user_now_liked = ""
             try:
                like = self.browser.find_element_by_xpath("//span[@class='_aamw']/button")
-               user_now_liked = self.browser.find_element_by_xpath("//div[@class='_ab8w  _ab94 _ab97 _ab9f _ab9k _ab9p _abcm']/div/span/a").text
-               likeNodes = like.get_attribute('innerHTML')
-               likeSoup = BeautifulSoup(likeNodes, 'lxml')
-               if likeSoup.findAll('svg', {"aria-label": "Like"}) and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
-                   print('==============================> PIC # ',j )
-                   actions.pause(3)
-                   actions.move_to_element(like)
-                   actions.pause(2)
-                   actions.click(like)
-                   self.last_liked = user_now_liked
-                   print('Liked "%s" !' % user_now_liked)
-                   j = j + 1
-               else:
-                   print('conditions of the like buttons were not met')
-                   print('like button: %s' % like)
-                   print('user_now_liked: %s' % user_now_liked)
+               try:
+                  user_now_liked = self.browser.find_element_by_xpath("//div[@class='_aacl _aaco _aacw _aacx _aad6 _aade']/span/a").text
+               except:
+                  print('user was not identified')
+            #    likeNodes = like.get_attribute('innerHTML')
+            #    likeSoup = BeautifulSoup(likeNodes, 'lxml')
+            #    if likeSoup.findAll('svg', {"fill": "#fafafa"}) and self.last_liked and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
+            #    if likeSoup.findAll('svg', {"fill": "#fafafa"}):
+               print('==============================> PIC # ',j )
+               actions.pause(3)
+               actions.move_to_element(like)
+               actions.pause(2)
+               actions.click(like)
+               self.last_liked = user_now_liked
+               print('Liked "%s" !' % user_now_liked)
+               j = j + 1
+            #    else:
+            #        print('conditions of the like buttons were not met')
+            #        print('like button: %s' % like)
+               print('user_now_liked: %s' % user_now_liked)
                t = t + 1
                print('total:', t)
             except:

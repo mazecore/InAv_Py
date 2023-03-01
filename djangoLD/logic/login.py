@@ -47,6 +47,8 @@ class LogIn:
     def refusingToTurnNotificationsOn(self):
         print('waiting for 7 sec...')
         sleep(7)
+        print('2 sec more..')
+        sleep(2)
         print('refusing to turn notifications on...')
         try:
             notNowButton = self.browser.find_element_by_xpath("//*[contains(text(),'Not Now')]")
