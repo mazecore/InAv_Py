@@ -62,5 +62,6 @@ def stop_collection(HttpRequest):
 def auto_shutdown(HttpRequest):
     
     with open('stopper.json', 'w') as file:
-        json.dump({"shutdown" : True}, file)
+        value = json.load(f)["manual_stop"]
+        json.dump({"shutdown" : True, "manual_stop": value }, file)
     return HttpResponse(200)
