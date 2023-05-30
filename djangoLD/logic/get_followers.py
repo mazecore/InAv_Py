@@ -30,7 +30,8 @@ class FollowingFollowers:
         
     def gettingTotalNumber(self):
         print('getting %s...' % self.followers_or_following)
-        n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/div/span' % self.followers_or_following).text).replace('k', '000')
+        n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text).replace('k', '000')
+        n = n.split()[0]
         n = n.replace('.', '')
         n = n.replace(',', '')
         n = n.replace('K', '000')
@@ -71,7 +72,7 @@ class FollowingFollowers:
                 multiple = multiple + 0.1
                 self.browser.execute_script('(document.getElementsByClassName("_aano"))[0].scrollTo(0, {}*(document.getElementsByClassName("_aano"))[0].scrollHeight);'.format(multiple))
                 sleep(1)
-                followersList = self.browser.find_element_by_xpath('//div[@class="_aano"]/div')
+                followersList = self.browser.find_element_by_xpath('//div[@class="_aano"]/div/div')
                 ActionChains(self.browser)\
                       .move_to_element(followersList)\
                       .perform()
@@ -79,7 +80,7 @@ class FollowingFollowers:
                 followerSoup = BeautifulSoup(followersListNodes, 'lxml')
                 print('creating the list...')
                 sleep(2)
-                self.createList(followerSoup.html.body.div)
+                self.createList(followerSoup.html.body)
                 loop = loop + 1
 
                 if len(self.theList) >= self.numberOfFollowers - 2:
@@ -96,16 +97,24 @@ class FollowingFollowers:
                         dead_end_detector.pop()
                     
         except Exception as e:
-            print('list length on error:', len(self.theList))
+            print('list on error:', self.theList)
+            if (len(self.theList)):
+                return self.theList
             print('shit didnt work')
             print(e)
             self.browser.close()       
     
     def close(self):
-        close = self.browser.find_element_by_xpath('//button[@class="wpO6b  "]')
-        ActionChains(self.browser)\
-            .move_to_element(close).click()\
-            .perform() 
+        # return self.theList
+        # self.browser.close()
+        try:
+            close = self.browser.find_element_by_xpath('//button[@class="_abl-"]')
+            ActionChains(self.browser)\
+                .move_to_element(close).click()\
+                .perform()
+        except Exception as e:
+            print('nyeettt', e)
+            return self.theList
 
     def createList(self, body):
         for li in body:

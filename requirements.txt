@@ -1,6 +1,6 @@
 async-generator==1.10
 attrs==21.4.0
-beautifulsoup4==4.8.1
+beautifulsoup4==4.12.2
 certifi==2019.9.11
 cffi==1.15.0
 chardet==3.0.4

@@ -34,10 +34,19 @@ class LikerFollower:
                 return value
         except:
             print('couldnt get manual stopper')
+            
+    def get_manual_shutdown(self):
+        try:
+            with open('stopper.json', 'r') as f:
+                value = json.load(f)["shut_down"]
+                print('manual_shutdown: %s' % value)
+                return value
+        except:
+            print('couldnt get manual shut_down')
         
-    def reset_manual_stopper(self):
+    def reset_manual_stopper_and_shutdown(self):
         with open('stopper.json', 'w') as file:
-            json.dump({"manual_stop" : False}, file)
+            json.dump({"manual_stop": False, "shut_down": False}, file)
 
     def loadPics(self):
         try:
@@ -121,8 +130,9 @@ class LikerFollower:
                     continue
                 continue
         self.updateIndex(content, i)
-        self.reset_manual_stopper()
-        if self.shut_down:
+        manual_shut_down = self.get_manual_shutdown()
+        self.reset_manual_stopper_and_shutdown()
+        if self.shut_down or manual_shut_down:
             os.system("shutdown /s /t 1")
         return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
 
@@ -180,7 +190,10 @@ class LikerFollower:
             like = ""
             user_now_liked = ""
             try:
-               like = self.browser.find_element_by_xpath("//span[@class='_aamw']/button")
+               try:
+                  like = self.browser.find_element_by_xpath("//span[@class='_aamw']/button")
+               except:
+                  like = self.browser.find_element_by_xpath("//span[@class='xp7jhwk']/button")
                try:
                   user_now_liked = self.browser.find_element_by_xpath("//div[@class='_aacl _aaco _aacw _aacx _aad6 _aade']/span/a").text
                except:
