@@ -61,7 +61,7 @@ def stop_collection(HttpRequest):
 @csrf_exempt
 def auto_shutdown(HttpRequest):
     
-    with open('stopper.json', 'w') as file:
+    with open('stopper.json', 'w') as f:
         value = json.load(f)["manual_stop"]
-        json.dump({"shutdown" : True, "manual_stop": value }, file)
+        json.dump({"shut_down" : True, "manual_stop": value }, f)
     return HttpResponse(200)
