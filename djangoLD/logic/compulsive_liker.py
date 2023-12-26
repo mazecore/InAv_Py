@@ -151,7 +151,7 @@ class LikerFollower:
                   
     def loadTagsPage(self):
         self.message = "Tags didn't load"
-        self.browser.get('https://www.instagram.com/explore/tags/%s/' % self.input)
+        self.browser.get('https://www.instagram.com/%s/tagged' % self.input)
         self.counter = 0
         self.thePics = []
         lastNumberOfPicturesCollected = 0
@@ -174,15 +174,16 @@ class LikerFollower:
             print('number of pictures collected ========>', lastNumberOfPicturesCollected)
             self.counter = self.counter + 1
             sleep(2)
-        self.picsURLs = self.picsURLs[9:]
+        # self.picsURLs = self.picsURLs[9:]
         self.message = "Tags did load"
 
 
     def like(self):
         self.message = "Login and tagged list of photos did load. Liking didn't work."
         print('going to like. There are %s urls' % len(self.picsURLs))
-        j = 0
+        errors = 0
         t = 1
+        actually_liked = 0
         for i in self.picsURLs:
             self.browser.get(i)
             sleep(4)
@@ -193,37 +194,37 @@ class LikerFollower:
                try:
                   like = self.browser.find_element_by_xpath("//span[@class='_aamw']/button")
                except:
-                  like = self.browser.find_element_by_xpath("//span[@class='xp7jhwk']/button")
+                  like = self.browser.find_element_by_xpath("//span[@class='xp7jhwk']/div")
                try:
-                  user_now_liked = self.browser.find_element_by_xpath("//div[@class='_aacl _aaco _aacw _aacx _aad6 _aade']/span/a").text
+                  user_now_liked = self.browser.find_element_by_xpath("//span[@class='xt0psk2']/div/a").text
                except:
                   print('user was not identified')
             #    likeNodes = like.get_attribute('innerHTML')
             #    likeSoup = BeautifulSoup(likeNodes, 'lxml')
             #    if likeSoup.findAll('svg', {"fill": "#fafafa"}) and self.last_liked and self.last_liked != user_now_liked and user_now_liked not in test_file.skips:
             #    if likeSoup.findAll('svg', {"fill": "#fafafa"}):
-               print('==============================> PIC # ',j )
-               actions.pause(3)
-               actions.move_to_element(like)
-               actions.pause(2)
-               actions.click(like)
-               self.last_liked = user_now_liked
-               print('Liked "%s" !' % user_now_liked)
-               j = j + 1
-            #    else:
-            #        print('conditions of the like buttons were not met')
-            #        print('like button: %s' % like)
-               print('user_now_liked: %s' % user_now_liked)
-               t = t + 1
-               print('total:', t)
+               if user_now_liked not in test_file.skips:
+                    print('==============================> url link # ',t )
+                    actions.pause(3)
+                    actions.move_to_element(like)
+                    actions.pause(2)
+                    actions.click(like)
+                    self.last_liked = user_now_liked
+                    print('Liked "%s" !' % user_now_liked)
+                    errors = 0
+                    actually_liked = actually_liked + 1
+                    print('actual number of likes is: ', actually_liked)
             except:
+                errors = errors + 1
+                if errors > 10:
+                    t = t - errors
+                    break
                 print('error occured')
                 print('like button: %s' % like)
                 print('user_now_liked: %s' % user_now_liked)
                 actions.pause(2)
             actions.perform()
-            # if j > self.number:
-            #            break
+            t = t + 1
         if self.photolinks:
             self.photolinks["index"] = self.photolinks["index"] + t
             self.updatePhotoLinks()

@@ -55,13 +55,12 @@ def collect_photos(HttpRequest):
 def stop_collection(HttpRequest):
     
     with open('stopper.json', 'w') as file:
-        json.dump({"manual_stop" : True}, file)
+        json.dump({"shut_down" : False, "manual_stop" : True}, file)
     return HttpResponse(200)
 
 @csrf_exempt
 def auto_shutdown(HttpRequest):
     
     with open('stopper.json', 'w') as f:
-        value = json.load(f)["manual_stop"]
-        json.dump({"shut_down" : True, "manual_stop": value }, f)
+        json.dump({"shut_down" : True, "manual_stop": False }, f)
     return HttpResponse(200)
