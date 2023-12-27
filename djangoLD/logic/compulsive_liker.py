@@ -215,20 +215,26 @@ class LikerFollower:
                     actually_liked = actually_liked + 1
                     print('actual number of likes is: ', actually_liked)
             except:
-                errors = errors + 1
+                try:
+                    private = self.browser.find_element_by_xpath('//*[text() =  "Follow"]')
+                    print('private account')
+                except:
+                    try:
+                        unavailble = self.browser.find_element_by_xpath ('//*[text() =  "Sorry, this page isn\'t available."]')
+                        print('page unavailable')
+                    except:
+                        errors = errors + 1
+                        print('we hit the rate limiter. errors: ', errors)
                 if errors > 10:
                     t = t - errors
                     break
-                print('error occured')
-                print('like button: %s' % like)
-                print('user_now_liked: %s' % user_now_liked)
                 actions.pause(2)
             actions.perform()
             t = t + 1
         if self.photolinks:
             self.photolinks["index"] = self.photolinks["index"] + t
             self.updatePhotoLinks()
-        self.message = "Liking did work."
+        self.message = "Liking worked."
 
     def follow(self):
         print('going to follow. There are %s urls' % len(self.picsURLs))
