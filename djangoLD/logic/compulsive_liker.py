@@ -8,6 +8,7 @@ import winsound
 import random
 import djangoLD.test_file as test_file
 import os
+from selenium.webdriver.common.by import By
 # import lxml, lxml.html
 
 class LikerFollower:
@@ -155,11 +156,12 @@ class LikerFollower:
         self.counter = 0
         self.thePics = []
         lastNumberOfPicturesCollected = 0
+        sleep(5)
 
         while len(self.picsURLs) < self.number + 20 and self.counter < 100:
             self.browser.execute_script('window.scrollTo(0, document.body.scrollHeight);')
             sleep(2)
-            self.thePics = self.browser.find_elements_by_xpath('//a[contains(@href,"/p/")]')
+            self.thePics = self.browser.find_elements(By.XPATH, '//a[contains(@href,"/p/")]')
             sleep(2)
             for pic in self.thePics:
                 try:
@@ -192,7 +194,7 @@ class LikerFollower:
             user_now_liked = ""
             try:
                try:
-                  like = self.browser.find_element_by_xpath("//span[@class='_aamw']/button")
+                  like = self.browser.find_element_by_xpath("//div[@class='x1ypdohk']/div")
                except:
                   like = self.browser.find_element_by_xpath("//span[@class='xp7jhwk']/div")
                try:
@@ -262,17 +264,17 @@ class LikerFollower:
 
 
     def likyLiky(self):
-        if self.thereAreNoErrors():
-            try:
-                self.loadTagsPage()
-                self.like()
-                self.browser.close()
-                return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
-            except:
-                self.browser.close()
-                return {"urls": self.picsURLs, "message": self.message, "error": True }
-        else:
-            return {"urls": None, "message": self.message, "error": True }
+        # if self.thereAreNoErrors():
+        try:
+            self.loadTagsPage()
+            self.like()
+            self.browser.close()
+            return  {"urls": self.picsURLs, "message": "Liking is complete!", "error": False }
+        except:
+            self.browser.close()
+            return {"urls": self.picsURLs, "message": self.message, "error": True }
+        # else:
+        #     return {"urls": None, "message": self.message, "error": True }
             
 
     
