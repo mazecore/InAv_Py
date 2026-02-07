@@ -86,7 +86,7 @@ class LikerFollower:
                 self.browser.get('https://www.instagram.com' + content['followers'][i])
                 manual_stop = self.get_manual_stopper()
                 sleep(random.randint(10,16))
-                link = self.browser.find_element_by_xpath('//article[@*]/div/div/div/div/a').get_attribute('href')
+                link = self.browser.find_element(By.XPATH, '//article[@*]/div/div/div/div/a').get_attribute('href')
                 if link:
                     print('great success => ', link)
                     self.picsURLs.append(link)
@@ -98,14 +98,14 @@ class LikerFollower:
             except:
                 try:
                     print(content['followers'][i].replace("/", ""))
-                    private_account = self.browser.find_element_by_xpath('//*[text() = "%s"]' % content['followers'][i].replace("/", ""))
+                    private_account = self.browser.find_element(By.XPATH, '//*[text() = "%s"]' % content['followers'][i].replace("/", ""))
                     i += 1
                     sorry_pages = 0
                     print('added number on private account error =>', i)
                     sleep(3)
                 except:
                     try:
-                       unavailble = self.browser.find_element_by_xpath ('//*[text() =  "Sorry, this page isn\'t available."]')
+                       unavailble = self.browser.find_element By.XPATH, ('//*[text() =  "Sorry, this page isn\'t available."]')
                        i+=1
                        sorry_pages+=1
                        if sorry_pages > 5:
@@ -116,7 +116,7 @@ class LikerFollower:
                        sleep(1)
                     except:
                         try:
-                            finsh = self.browser.find_element_by_xpath ('//*[text() =  "Please wait a few minutes before you try again."]')
+                            finsh = self.browser.find_element By.XPATH, ('//*[text() =  "Please wait a few minutes before you try again."]')
                             winsound.PlaySound('C:\Windows\Media\Windows Proximity Connection.wav', winsound.SND_FILENAME)
                             print('this is it. stopping on ', i)
                             break
@@ -194,11 +194,11 @@ class LikerFollower:
             user_now_liked = ""
             try:
                try:
-                  like = self.browser.find_element_by_xpath("//div[@class='x1ypdohk']/div")
+                  like = self.browser.find_element(By.XPATH, "//div[@class='x1ypdohk']/div")
                except:
-                  like = self.browser.find_element_by_xpath("//span[@class='xp7jhwk']/div")
+                  like = self.browser.find_element(By.XPATH, "//span[@class='xp7jhwk']/div")
                try:
-                  user_now_liked = self.browser.find_element_by_xpath("//span[@class='xt0psk2']/div/a").text
+                  user_now_liked = self.browser.find_element(By.XPATH, "//span[@class='xt0psk2']/div/a").text
                except:
                   print('user was not identified')
             #    likeNodes = like.get_attribute('innerHTML')
@@ -218,11 +218,11 @@ class LikerFollower:
                     print('actual number of likes is: ', actually_liked)
             except:
                 try:
-                    private = self.browser.find_element_by_xpath('//*[text() =  "Follow"]')
+                    private = self.browser.find_element(By.XPATH, '//*[text() =  "Follow"]')
                     print('private account')
                 except:
                     try:
-                        unavailble = self.browser.find_element_by_xpath ('//*[text() =  "Sorry, this page isn\'t available."]')
+                        unavailble = self.browser.find_element(By.XPATH, '//*[text() =  "Sorry, this page isn\'t available."]')
                         print('page unavailable')
                     except:
                         errors = errors + 1
@@ -246,7 +246,7 @@ class LikerFollower:
             sleep(2)
             actions = ActionChains(self.browser)
             try:
-               follow = self.browser.find_element_by_xpath("//button[text()='Follow']")
+               follow = self.browser.find_element(By.XPATH, "//button[text()='Follow']")
                if follow:
                    actions.pause(2)
                    actions.move_to_element(follow)
@@ -284,7 +284,7 @@ class LikerFollower:
             self.message = self.browser
             return False
         try:
-            error = self.browser.find_element_by_xpath("//*[@id='slfErrorAlert']")
+            error = self.browser.find_element(By.XPATH, "//*[@id='slfErrorAlert']")
             print(error.text)
             self.message = error.text
             self.browser.close()
