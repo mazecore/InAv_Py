@@ -105,7 +105,7 @@ class LikerFollower:
                     sleep(3)
                 except:
                     try:
-                       unavailble = self.browser.find_element By.XPATH, ('//*[text() =  "Sorry, this page isn\'t available."]')
+                       unavailble = self.browser.find_element(By.XPATH, '//*[text() =  "Sorry, this page isn\'t available."]')
                        i+=1
                        sorry_pages+=1
                        if sorry_pages > 5:
@@ -116,7 +116,7 @@ class LikerFollower:
                        sleep(1)
                     except:
                         try:
-                            finsh = self.browser.find_element By.XPATH, ('//*[text() =  "Please wait a few minutes before you try again."]')
+                            finsh = self.browser.find_element(By.XPATH, '//*[text() =  "Please wait a few minutes before you try again."]')
                             winsound.PlaySound('C:\Windows\Media\Windows Proximity Connection.wav', winsound.SND_FILENAME)
                             print('this is it. stopping on ', i)
                             break

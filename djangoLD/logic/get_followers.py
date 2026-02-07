@@ -4,6 +4,7 @@ from time import sleep
 from bs4 import BeautifulSoup
 from .login import LogIn
 import json
+from selenium.webdriver.common.by import By
 
 class FollowingFollowers:
     
@@ -30,7 +31,7 @@ class FollowingFollowers:
         
     def gettingTotalNumber(self):
         print('getting %s...' % self.followers_or_following)
-        n = (self.browser.find_element_by_xpath('//a[contains(@href,"%s")]/span' % self.followers_or_following).text).replace('k', '000')
+        n = (self.browser.find_element(By.XPATH, '//a[contains(@href,"%s")]/span' % self.followers_or_following).text).replace('k', '000')
         n = n.split()[0]
         n = n.replace('.', '')
         n = n.replace(',', '')
@@ -42,19 +43,19 @@ class FollowingFollowers:
         print('number of {} is {}'.format(self.followers_or_following, self.numberOfFollowers))
         
     def goingToTheList(self):
-        self.followersLink = self.browser.find_element_by_xpath('//a[contains(@href, "%s")]' % self.followers_or_following)
+        self.followersLink = self.browser.find_element(By.XPATH, '//a[contains(@href, "%s")]' % self.followers_or_following)
         print(self.followersLink)
         ActionChains(self.browser)\
           .move_to_element(self.followersLink).click()\
           .perform()
         sleep(1)
 #        try:
-#           self.followersModal = self.browser.find_element_by_xpath('//div[@class="isgrP"]')
+#           self.followersModal = self.browser.find_element(By.XPATH, '//div[@class="isgrP"]')
 #        except:
 #            ActionChains(self.browser)\
 #              .move_to_element(self.followersLink).click()\
 #              .perform()
-#            self.followersModal = self.browser.find_element_by_xpath('//div[@class="isgrP"]')
+#            self.followersModal = self.browser.find_element(By.XPATH, '//div[@class="isgrP"]')
 
     def loopThisToScrollTheListOfFollowers(self):
         print('starting to loop...')
@@ -72,7 +73,7 @@ class FollowingFollowers:
                 multiple = multiple + 0.1
                 self.browser.execute_script('(document.getElementsByClassName("_aano"))[0].scrollTo(0, {}*(document.getElementsByClassName("_aano"))[0].scrollHeight);'.format(multiple))
                 sleep(1)
-                followersList = self.browser.find_element_by_xpath('//div[@class="_aano"]/div/div')
+                followersList = self.browser.find_element(By.XPATH, '//div[@class="_aano"]/div/div')
                 ActionChains(self.browser)\
                       .move_to_element(followersList)\
                       .perform()
@@ -108,7 +109,7 @@ class FollowingFollowers:
         # return self.theList
         # self.browser.close()
         try:
-            close = self.browser.find_element_by_xpath('//button[@class="_abl-"]')
+            close = self.browser.find_element(By.XPATH, '//button[@class="_abl-"]')
             ActionChains(self.browser)\
                 .move_to_element(close).click()\
                 .perform()
@@ -147,12 +148,12 @@ class FollowingFollowers:
             try:
                 self.browser.get('https://www.instagram.com%s' % i['user_name'])
                 sleep(2)
-                button = self.browser.find_element_by_xpath('//button[@class="_5f5mN    -fzfL     _6VtSN     yZn4P   "]')
+                button = self.browser.find_element(By.XPATH, '//button[@class="_5f5mN    -fzfL     _6VtSN     yZn4P   "]')
                 ActionChains(self.browser)\
                           .move_to_element(button).click()\
                           .perform()
                 sleep(2)
-                unfollow_button = self.browser.find_element_by_xpath('//button[text()="Unfollow"]')
+                unfollow_button = self.browser.find_element(By.XPATH, '//button[text()="Unfollow"]')
                 if unfollow_button:
                     ActionChains(self.browser)\
                               .move_to_element(unfollow_button).click()\
